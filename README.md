@@ -1,2 +1,114 @@
 # jsonx
+
+[![deno doc](https://doc.deno.land/badge.svg)](https://deno.land/x/jsonx)
+
 JSX runtime for composing JSON.
+
+## Usage
+
+Run `deno run -A examples/example/main.tsx` to see the example in action.
+
+### `main.tsx`
+
+```tsx
+import { Asset, Assets } from "./assets_component.ts";
+
+interface SvelteKitAppProps {
+  // deno-lint-ignore no-explicit-any
+  children?: any;
+}
+
+function SvelteKitApp(props: SvelteKitAppProps) {
+  return (
+    <Assets>
+      {/* SvelteKitApp default files */}
+      <Asset
+        path="main.ts"
+        asset={{ content: "console.log('Hello, world!');" }}
+      />
+      {...props.children}
+    </Assets>
+  );
+}
+
+function Example1() {
+  return (
+    <SvelteKitApp>
+      <Asset
+        path="example.ts"
+        asset={{ content: "console.log('Hello, world!');" }}
+      />
+    </SvelteKitApp>
+  );
+}
+
+// deno run -A ./examples/example/main.tsx
+//
+if (import.meta.main) {
+  // {
+  //   assets: {
+  //     "main.ts": {
+  //       kind: "file",
+  //       encoding: "utf-8",
+  //       content: "console.log('Hello, world!');"
+  //     },
+  //     "example.ts": {
+  //       kind: "file",
+  //       encoding: "utf-8",
+  //       content: "console.log('Hello, world!');"
+  //     }
+  //   }
+  // }
+  //
+  console.log(<Example1 />);
+}
+```
+
+### `assets_component.ts`
+
+```ts
+import type { Asset, Assets } from "./assets.ts";
+import { AssetKind, EncodingType } from "./assets.ts";
+
+export interface AssetsProps {
+  assets?: Assets;
+}
+
+export function Assets(props: AssetsProps) {
+  return { assets: props.assets ?? {} };
+}
+
+export interface AssetProps {
+  path: string;
+  asset:
+    | Asset
+    // UTF-8 text file asset by default.
+    | { content: string };
+}
+
+export function makeAsset(props: AssetProps): Asset {
+  // UTF-8 text file asset by default.
+  if (!("kind" in props.asset)) {
+    return {
+      kind: AssetKind.FILE,
+      encoding: EncodingType.UTF8,
+      content: props.asset.content,
+    };
+  }
+
+  return props.asset;
+}
+
+export function Asset(props: AssetProps) {
+  return {
+    assets(assets: Assets) {
+      assets[props.path] = makeAsset(props);
+      return assets;
+    },
+  };
+}
+```
+
+---
+
+Developed with ❤️ by [**@EthanThatOneKid**](https://etok.codes/)
