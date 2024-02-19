@@ -1,0 +1,10 @@
+{
+  "lock": false,
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "jsonx"
+  },
+  "imports": {
+    "jsonx/jsx-runtime": "./jsx_runtime.ts"
+  }
+}
