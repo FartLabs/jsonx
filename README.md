@@ -6,7 +6,7 @@ JSX runtime for composing JSON.
 
 ## Usage
 
-Run `deno run -A examples/example/main.tsx` to see the example in action.
+Run `deno task example` to see the example in action.
 
 ### `main.tsx`
 
@@ -65,6 +65,7 @@ if (import.meta.main) {
 ### `assets_component.ts`
 
 ```ts
+import { $reduce } from "jsonx/lib/jsonx/mod.ts";
 import type { Asset, Assets } from "./assets.ts";
 import { AssetKind, EncodingType } from "./assets.ts";
 
@@ -99,10 +100,10 @@ export function makeAsset(props: AssetProps): Asset {
 
 export function Asset(props: AssetProps) {
   return {
-    assets(assets: Assets) {
+    assets: $reduce((assets: Assets) => {
       assets[props.path] = makeAsset(props);
       return assets;
-    },
+    }),
   };
 }
 ```

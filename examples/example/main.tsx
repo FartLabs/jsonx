@@ -29,7 +29,7 @@ function Example1() {
   );
 }
 
-// deno run -A ./examples/example/main.tsx
+// deno task example
 //
 if (import.meta.main) {
   // {

@@ -1,5 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 
+import { REDUCE } from "jsonx/lib/jsonx/mod.ts";
+
 /**
  * h is a function that represents the JSX runtime.
  *
@@ -71,17 +73,16 @@ function appendChildren<T extends object>(
 
     // Apply the child to the parent element.
     for (const key in child) {
-      switch (typeof child[key]) {
-        case "function": {
-          const fn = child[key] as (element: any) => any;
-          element[key] = fn(element[key]);
-          break;
-        }
-
-        default: {
-          element[key] = child[key];
-        }
+      const value = child[key] as any;
+      // If the child is a reduction directive, overwrite the parent element.
+      if (typeof value[REDUCE] === "function") {
+        const reduce = value[REDUCE] as (element: any) => any;
+        element[key] = reduce(element[key]);
+        continue;
       }
+
+      // If the child is a JavaScript object, overwrite the parent element.
+      element[key] = child[key];
     }
   });
 }

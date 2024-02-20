@@ -1,3 +1,4 @@
+import { $reduce } from "jsonx/lib/jsonx/mod.ts";
 import type { Asset, Assets } from "./assets.ts";
 import { AssetKind, EncodingType } from "./assets.ts";
 
@@ -32,9 +33,9 @@ export function makeAsset(props: AssetProps): Asset {
 
 export function Asset(props: AssetProps) {
   return {
-    assets(assets: Assets) {
+    assets: $reduce((assets: Assets) => {
       assets[props.path] = makeAsset(props);
       return assets;
-    },
+    }),
   };
 }

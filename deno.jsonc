@@ -2,9 +2,13 @@
   "lock": false,
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "jsonx"
+    "jsxImportSource": "jsonx-jsx"
   },
   "imports": {
-    "jsonx/jsx-runtime": "./jsx_runtime.ts"
+    "jsonx/": "./",
+    "jsonx-jsx/jsx-runtime": "./lib/jsx_runtime/mod.ts"
+  },
+  "tasks": {
+    "example": "deno run -A examples/example/main.tsx"
   }
 }
