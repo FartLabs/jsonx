@@ -1,4 +1,5 @@
 import { Asset, Assets } from "./assets_component.ts";
+import { LocalAsset } from "./local_asset_component.tsx";
 
 interface SvelteKitAppProps {
   // deno-lint-ignore no-explicit-any
@@ -9,9 +10,9 @@ function SvelteKitApp(props: SvelteKitAppProps) {
   return (
     <Assets>
       {/* SvelteKitApp default files */}
-      <Asset
-        path="main.ts"
-        content="console.log('Hello, world!');"
+      <LocalAsset
+        path="src/routes/+page.svelte"
+        src={new URL(import.meta.resolve("./hello.svelte"))}
       />
       {...props.children}
     </Assets>

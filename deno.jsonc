@@ -5,6 +5,7 @@
     "jsxImportSource": "jsonx-jsx"
   },
   "imports": {
+    "std/": "https://deno.land/std@0.216.0/",
     "jsonx/": "./",
     "jsonx-jsx/jsx-runtime": "./lib/jsx_runtime/mod.ts"
   },
