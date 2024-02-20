@@ -1,5 +1,5 @@
 import { Asset, Assets } from "./assets_component.ts";
-import { LocalAsset } from "./local_asset_component.tsx";
+import { LocalGlobAssets } from "./local_glob_assets_component.tsx";
 
 interface SvelteKitAppProps {
   // deno-lint-ignore no-explicit-any
@@ -10,9 +10,10 @@ function SvelteKitApp(props: SvelteKitAppProps) {
   return (
     <Assets>
       {/* SvelteKitApp default files */}
-      <LocalAsset
-        path="src/routes/+page.svelte"
-        src={new URL(import.meta.resolve("./hello.svelte"))}
+      <LocalGlobAssets
+        path="src/routes/"
+        glob={new URL(import.meta.resolve("./**/*.svelte"))}
+        root={import.meta.resolve("./")}
       />
       {...props.children}
     </Assets>
@@ -35,10 +36,10 @@ function Example1() {
 if (import.meta.main) {
   // {
   //   assets: {
-  //     "main.ts": {
+  //     "src/routes/hello.svelte": {
   //       kind: "file",
   //       encoding: "utf-8",
-  //       content: "console.log('Hello, world!');"
+  //       content: "PHNjcmlwdCBsYW5nPSJ0cyI+DQogIGV4cG9ydCBsZXQgbmFtZSA9ICd3b3JsZCc7DQo8L3NjcmlwdD4NCg0KPGgxPkhlbGxvIHtu"... 16 more characters
   //     },
   //     "example.ts": {
   //       kind: "file",
