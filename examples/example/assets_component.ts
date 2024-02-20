@@ -33,7 +33,7 @@ export function makeAsset(props: AssetProps): Asset {
       if (!("gitSha1" in props)) {
         return {
           kind: AssetKind.FILE,
-          encoding: EncodingType.UTF8,
+          encoding: props.encoding,
           content: props.content,
         };
       }

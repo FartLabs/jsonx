@@ -38,7 +38,7 @@ if (import.meta.main) {
   //   assets: {
   //     "src/routes/hello.svelte": {
   //       kind: "file",
-  //       encoding: "utf-8",
+  //       encoding: "base64",
   //       content: "PHNjcmlwdCBsYW5nPSJ0cyI+DQogIGV4cG9ydCBsZXQgbmFtZSA9ICd3b3JsZCc7DQo8L3NjcmlwdD4NCg0KPGgxPkhlbGxvIHtu"... 16 more characters
   //     },
   //     "example.ts": {
