@@ -24,26 +24,24 @@ function SvelteKitApp(props: SvelteKitAppProps) {
       {/* SvelteKitApp default files */}
       <Asset
         path="main.ts"
-        asset={{ content: "console.log('Hello, world!');" }}
+        content="console.log('Hello, world!');"
       />
       {...props.children}
     </Assets>
   );
 }
 
-function Example1() {
+function Example() {
   return (
     <SvelteKitApp>
       <Asset
         path="example.ts"
-        asset={{ content: "console.log('Hello, world!');" }}
+        content="console.log('Hello, world!');"
       />
     </SvelteKitApp>
   );
 }
 
-// deno run -A ./examples/example/main.tsx
-//
 if (import.meta.main) {
   // {
   //   assets: {
@@ -60,7 +58,7 @@ if (import.meta.main) {
   //   }
   // }
   //
-  console.log(<Example1 />);
+  console.log(<Example />);
 }
 ```
 
@@ -78,25 +76,25 @@ export function Assets(props: AssetsProps) {
   return { assets: props.assets ?? {} };
 }
 
-export interface AssetProps {
-  path: string;
-  asset:
+export type AssetProps =
+  & { path: string }
+  & (
     | Asset
     // UTF-8 text file asset by default.
-    | { content: string };
-}
+    | { content: string }
+  );
 
 export function makeAsset(props: AssetProps): Asset {
   // UTF-8 text file asset by default.
-  if (!("kind" in props.asset)) {
+  if (!("kind" in props)) {
     return {
       kind: AssetKind.FILE,
       encoding: EncodingType.UTF8,
-      content: props.asset.content,
+      content: props.content,
     };
   }
 
-  return props.asset;
+  return props;
 }
 
 export function Asset(props: AssetProps) {

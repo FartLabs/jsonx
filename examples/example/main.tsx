@@ -11,7 +11,7 @@ function SvelteKitApp(props: SvelteKitAppProps) {
       {/* SvelteKitApp default files */}
       <Asset
         path="main.ts"
-        asset={{ content: "console.log('Hello, world!');" }}
+        content="console.log('Hello, world!');"
       />
       {...props.children}
     </Assets>
@@ -23,7 +23,7 @@ function Example1() {
     <SvelteKitApp>
       <Asset
         path="example.ts"
-        asset={{ content: "console.log('Hello, world!');" }}
+        content="console.log('Hello, world!');"
       />
     </SvelteKitApp>
   );
