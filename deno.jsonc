@@ -2,14 +2,14 @@
   "lock": false,
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "jsonx-jsx"
+    "jsxImportSource": "jsonx"
   },
   "imports": {
-    "std/": "https://deno.land/std@0.216.0/",
-    "jsonx/": "./",
-    "jsonx-jsx/jsx-runtime": "./lib/jsx_runtime/mod.ts"
+    "std/": "https://deno.land/std@0.217.0/",
+    "jsonx/": "./lib/",
+    "jsonx/jsx-runtime": "./lib/std/runtime/mod.ts"
   },
   "tasks": {
-    "example": "deno run -A examples/example/main.tsx"
+    "test": "deno test -A"
   }
 }

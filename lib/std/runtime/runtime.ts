@@ -1,14 +1,14 @@
 // deno-lint-ignore-file no-explicit-any
 
-import { REDUCE } from "jsonx/lib/jsonx/mod.ts";
+import { REDUCE } from "./$reduce.ts";
 
 /**
- * h is a function that represents the JSX runtime.
+ * createObject is a function that represents the JSONX runtime.
  *
  * @see
  * https://github.com/nanojsx/nano/blob/2590dd9477970b2dc2a1d1ae5fb03b7c87a84174/src/core.ts#L196
  */
-export function h(
+export function createObject(
   tagNameOrComponent: any,
   props: any = {},
   ...children: any[]
@@ -94,11 +94,15 @@ function createNode(
   _source?: string,
   _self?: string,
 ) {
-  let { children = [], ..._props } = props;
-  if (!Array.isArray(children)) children = [children];
-  return h(type, _props, ...children);
+  let { children = [], ...restProps } = props;
+  if (!Array.isArray(children)) {
+    children = [children];
+  }
+
+  return createObject(type, restProps, ...children);
 }
 
+export { createObject as h };
 export { createNode as jsx };
 export { createNode as jsxs };
 export { createNode as jsxDev };
