@@ -1,24 +1,24 @@
-import { $reduce } from "jsonx/lib/jsonx/mod.ts";
-import type { Asset, Assets } from "./assets.ts";
+import { $reduce } from "jsonx/std/runtime/mod.ts";
+import type { AssetData, AssetsData } from "./assets.ts";
 import { AssetKind, EncodingType } from "./assets.ts";
 
 export interface AssetsProps {
-  assets?: Assets;
+  data?: AssetsData;
 }
 
 export function Assets(props: AssetsProps) {
-  return { assets: props.assets ?? {} };
+  return { assets: props.data ?? {} };
 }
 
 export type AssetProps =
   & { path: string }
   & (
-    | Asset
+    | AssetData
     // UTF-8 text file asset by default.
     | { content: string }
   );
 
-export function makeAsset(props: AssetProps): Asset {
+export function makeAssetData(props: AssetProps): AssetData {
   // UTF-8 text file asset by default.
   if (!("kind" in props)) {
     return {
@@ -33,8 +33,8 @@ export function makeAsset(props: AssetProps): Asset {
 
 export function Asset(props: AssetProps) {
   return {
-    assets: $reduce((assets: Assets) => {
-      assets[props.path] = makeAsset(props);
+    assets: $reduce((assets: AssetsData) => {
+      assets[props.path] = makeAssetData(props);
       return assets;
     }),
   };

@@ -8,34 +8,39 @@ export enum EncodingType {
   BASE64 = "base64",
 }
 
-export interface TextFileAsset {
+export interface TextFileAssetData {
   kind: AssetKind.FILE;
   content: string;
   encoding: EncodingType;
 }
 
-export interface GitSha1FileAsset {
+export interface GitSha1FileAssetData {
   kind: AssetKind.FILE;
   gitSha1: string;
   size: number;
 }
 
-export type FileAsset = TextFileAsset | GitSha1FileAsset;
+export type FileAssetData = TextFileAssetData | GitSha1FileAssetData;
 
-export interface SymlinkAsset {
+export interface SymlinkAssetData {
   kind: AssetKind.SYMLINK;
   target: string;
 }
 
-export type Asset = FileAsset | SymlinkAsset;
+export type AssetData = FileAssetData | SymlinkAssetData;
 
 /**
- * Assets is a map whose key represents a file path, and the value is an asset
- * that composes the deployment.
+ * AssetsData is a map whose key represents a file path, and the value is an
+ * asset that composes the data.
  */
-export type Assets = Record<string, Asset>;
+export type AssetsData = Record<string, AssetData>;
 
-// https://github.com/denoland/deployctl/blob/3d0ba0f19e530bbfe94b241df1467dec3a8c6b4f/action/deps.js#L3998
+/**
+ * calculateGitSha1 calculates the SHA of the given bytes.
+ *
+ * @see
+ * https://github.com/denoland/deployctl/blob/3d0ba0f19e530bbfe94b241df1467dec3a8c6b4f/action/deps.js#L3998
+ */
 export async function calculateGitSha1(bytes: Uint8Array) {
   const prefix = `blob ${bytes.byteLength}\0`;
   const prefixBytes = new TextEncoder().encode(prefix);
