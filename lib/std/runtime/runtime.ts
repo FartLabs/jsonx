@@ -49,17 +49,25 @@ function appendChildren<T extends object>(
   children: T[],
   escape = true,
 ) {
-  // if the child is an html element
+  // If the child is an element, append it to the parent element.
   if (!Array.isArray(children)) {
     appendChildren(element, [children], escape);
     return;
   }
 
-  // htmlCollection to array
+  // Loose object type to array type conversion.
   if (typeof children === "object") {
     children = Array.prototype.slice.call(children);
   }
 
+  // If the child is a reduction directive, apply it to the parent element.
+  const { [REDUCE as keyof typeof element]: reduce, ...restElement } = element;
+  if (typeof reduce === "function") {
+    element = reduce(restElement);
+    return;
+  }
+
+  // Iterate through each child.
   children.forEach((child) => {
     if (!child) {
       return;
@@ -72,18 +80,7 @@ function appendChildren<T extends object>(
     }
 
     // Apply the child to the parent element.
-    for (const key in child) {
-      const value = child[key] as any;
-      // If the child is a reduction directive, overwrite the parent element.
-      if (typeof value[REDUCE] === "function") {
-        const reduce = value[REDUCE] as (element: any) => any;
-        element[key] = reduce(element[key]);
-        continue;
-      }
-
-      // If the child is a JavaScript object, overwrite the parent element.
-      element[key] = child[key];
-    }
+    element = Object.assign(element, child);
   });
 }
 
