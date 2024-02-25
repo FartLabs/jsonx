@@ -1,5 +1,6 @@
 export const REDUCE = "$reduce";
 
-export function $reduce<T>(fn: (value: T) => T): { [REDUCE]: (value: T) => T } {
+// deno-lint-ignore no-explicit-any
+export function $reduce<T>(fn: (value: T) => T): any {
   return { [REDUCE]: fn };
 }
