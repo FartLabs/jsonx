@@ -1,6 +1,6 @@
-import { assertEquals } from "std/assert/mod.ts";
+import { assertEquals } from "../../../developer_deps.ts";
 import { Asset, Assets } from "./components.ts";
-import { AssetKind, EncodingType } from "jsonx/std/assets/mod.ts";
+import { AssetKind, EncodingType } from "./assets.ts";
 
 function Example1() {
   return (

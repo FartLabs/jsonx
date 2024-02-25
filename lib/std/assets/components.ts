@@ -1,4 +1,4 @@
-import { $reduce } from "jsonx/std/runtime/mod.ts";
+import { $reduce } from "../../std/runtime/mod.ts";
 import type { AssetData, AssetsData } from "./assets.ts";
 import { AssetKind, EncodingType } from "./assets.ts";
 

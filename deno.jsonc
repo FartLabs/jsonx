@@ -3,6 +3,7 @@
   "name": "@fartlabs/jsonx",
   "version": "0.0.1",
   "exports": {
+    "./jsx-runtime": "./lib/std/runtime/mod.ts",
     "./std/runtime": "./lib/std/runtime/mod.ts",
     "./std/assets": "./lib/std/assets/mod.ts"
   },
@@ -11,8 +12,6 @@
     "jsxImportSource": "jsonx"
   },
   "imports": {
-    "std/": "https://deno.land/std@0.217.0/",
-    "jsonx/": "./lib/",
     "jsonx/jsx-runtime": "./lib/std/runtime/mod.ts"
   },
   "tasks": {

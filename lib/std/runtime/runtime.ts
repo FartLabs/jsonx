@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 
-import { deepMerge } from "std/collections/deep_merge.ts";
+import { deepMerge } from "../../../deps.ts";
 import { REDUCE } from "./$reduce.ts";
 
 /**

@@ -1,7 +1,6 @@
-import { encodeBase64 } from "std/encoding/base64.ts";
-import { normalize } from "std/path/normalize.ts";
-import { type ExpandGlobOptions, expandGlobSync } from "std/fs/expand_glob.ts";
-import { Asset, AssetKind, EncodingType } from "jsonx/std/assets/mod.ts";
+import type { ExpandGlobOptions } from "../../../deps.ts";
+import { encodeBase64, expandGlobSync, normalize } from "../../../deps.ts";
+import { Asset, AssetKind, EncodingType } from "../assets/mod.ts";
 
 export interface LocalAssetProps {
   path: string;
