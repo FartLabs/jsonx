@@ -54,10 +54,9 @@ export function makeAssetData(props: AssetProps): AssetData {
 }
 
 export function Asset(props: AssetProps) {
-  return {
-    assets: $reduce((assets: AssetsData) => {
-      assets[props.path] = makeAssetData(props);
-      return assets;
-    }),
-  };
+  return $reduce((data: ReturnType<typeof Assets>) => {
+    data.assets ??= {};
+    data.assets[props.path] = makeAssetData(props);
+    return data;
+  });
 }

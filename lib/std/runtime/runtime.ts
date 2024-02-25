@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 
+import { deepMerge } from "std/collections/deep_merge.ts";
 import { REDUCE } from "./$reduce.ts";
 
 /**
@@ -12,7 +13,7 @@ export function createObject(
   tagNameOrComponent: any,
   props: any = {},
   ...children: any[]
-) {
+): any {
   // If children is passed as props, merge with ...children.
   if (props?.children) {
     const propsChildren = Array.isArray(props.children)
@@ -22,44 +23,43 @@ export function createObject(
 
     // Reflect the change in props.
     if (Array.isArray(props.children)) {
-      props.children = children;
+      props.children = [...children];
     }
   }
 
-  // If no children are passed, set to an empty array.
   if (!props.children) {
-    props.children = [];
+    props.children = children;
   }
 
   // Render component if tagNameOrComponent is a function.
-  if (typeof tagNameOrComponent === "function") {
-    const component = tagNameOrComponent;
-    const result = component(props);
-    appendChildren(result, children);
-    return result;
-  }
-
-  const element = {};
-  appendChildren(element, children);
-  return element;
+  const element = typeof tagNameOrComponent === "function"
+    ? tagNameOrComponent(props)
+    : {};
+  return appendChildren(element, children);
 }
 
 function appendChildren<T extends object>(
   element: T,
   children: T[],
-  escape = true,
 ) {
-  // if the child is an html element
+  // If the child is an element, append it to the parent element.
   if (!Array.isArray(children)) {
-    appendChildren(element, [children], escape);
+    appendChildren(element, [children]);
     return;
   }
 
-  // htmlCollection to array
+  // Loose object type to array type conversion.
   if (typeof children === "object") {
     children = Array.prototype.slice.call(children);
   }
 
+  // If the element is a reduction directive, apply it to itself.
+  const { [REDUCE as keyof T]: reduce, ...restElement } = element;
+  if (typeof reduce === "function") {
+    element = reduce(restElement);
+  }
+
+  // Iterate through each child.
   children.forEach((child) => {
     if (!child) {
       return;
@@ -67,24 +67,15 @@ function appendChildren<T extends object>(
 
     // If child is an array of children, append them instead.
     if (Array.isArray(child)) {
-      appendChildren(element, child, escape);
+      appendChildren(element, child);
       return;
     }
 
     // Apply the child to the parent element.
-    for (const key in child) {
-      const value = child[key] as any;
-      // If the child is a reduction directive, overwrite the parent element.
-      if (typeof value[REDUCE] === "function") {
-        const reduce = value[REDUCE] as (element: any) => any;
-        element[key] = reduce(element[key]);
-        continue;
-      }
-
-      // If the child is a JavaScript object, overwrite the parent element.
-      element[key] = child[key];
-    }
+    element = deepMerge(element, child) as T;
   });
+
+  return element;
 }
 
 function createNode(
@@ -93,7 +84,7 @@ function createNode(
   _key: string,
   _source?: string,
   _self?: string,
-) {
+): any {
   let { children = [], ...restProps } = props;
   if (!Array.isArray(children)) {
     children = [children];
@@ -107,6 +98,6 @@ export { createNode as jsx };
 export { createNode as jsxs };
 export { createNode as jsxDev };
 
-export function Fragment(props: any) {
-  return props.children;
+export function Fragment(props: any): any {
+  return createObject({}, props);
 }
