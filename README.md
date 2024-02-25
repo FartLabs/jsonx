@@ -4,6 +4,11 @@
 
 JSX runtime for composing JSON data.
 
+> [!IMPORTANT]
+>
+> This project is no longer kept up-to-date on <https://deno.land/x/jsonx> and
+> has new versions published to <https://jsr.io/@fartlabs/jsonx>.
+
 ## Development
 
 ### Style
