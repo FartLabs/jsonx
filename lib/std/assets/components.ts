@@ -28,7 +28,29 @@ export function makeAssetData(props: AssetProps): AssetData {
     };
   }
 
-  return props;
+  switch (props.kind) {
+    case AssetKind.FILE: {
+      if (!("gitSha1" in props)) {
+        return {
+          kind: AssetKind.FILE,
+          encoding: props.encoding,
+          content: props.content,
+        };
+      }
+
+      return {
+        kind: AssetKind.FILE,
+        gitSha1: props.gitSha1,
+        size: props.size,
+      };
+    }
+
+    case AssetKind.SYMLINK:
+      return {
+        kind: AssetKind.SYMLINK,
+        target: props.target,
+      };
+  }
 }
 
 export function Asset(props: AssetProps) {

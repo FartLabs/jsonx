@@ -38,13 +38,46 @@ function Example3() {
   );
 }
 
+interface Example4Props {
+  // deno-lint-ignore no-explicit-any
+  children?: any;
+}
+
+function Example4(props: Example4Props) {
+  return (
+    <>
+      <Asset
+        path="example4.ts"
+        content={'console.log("Example4");\n'}
+      />
+      {...props.children}
+    </>
+  );
+}
+
 Deno.test("Compose one asset", () => {
   const actual = <Example1 />;
   const expected = {
-    "example1.ts": {
-      kind: "file",
-      encoding: "utf-8",
-      content: 'console.log("Example1");\n',
+    assets: {
+      "example1.ts": {
+        kind: "file",
+        encoding: "utf-8",
+        content: 'console.log("Example1");\n',
+      },
+    },
+  };
+  assertEquals(actual, expected);
+});
+
+Deno.test("Compose asset in a fragment", () => {
+  const actual = <Example4 />;
+  const expected = {
+    assets: {
+      "example4.ts": {
+        content: 'console.log("Example4");\n',
+        encoding: "utf-8",
+        kind: "file",
+      },
     },
   };
   assertEquals(actual, expected);
@@ -53,8 +86,10 @@ Deno.test("Compose one asset", () => {
 Deno.test("Assets compose children successfully", () => {
   const actual = (
     <>
-      <Example1 />
       <Example3 />
+      <Example4>
+        <Example1 />
+      </Example4>
     </>
   );
   const expected = {
@@ -72,7 +107,12 @@ Deno.test("Assets compose children successfully", () => {
       "example3.ts": {
         kind: "file",
         encoding: "utf-8",
-        content: 'console.log("Example2");\n',
+        content: 'console.log("Example3");\n',
+      },
+      "example4.ts": {
+        content: 'console.log("Example4");\n',
+        encoding: "utf-8",
+        kind: "file",
       },
     },
   };
