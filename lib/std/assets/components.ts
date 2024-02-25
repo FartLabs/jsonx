@@ -6,7 +6,8 @@ export interface AssetsProps {
   data?: AssetsData;
 }
 
-export function Assets(props: AssetsProps) {
+// deno-lint-ignore no-explicit-any
+export function Assets(props: AssetsProps): any {
   return { assets: props.data ?? {} };
 }
 
@@ -53,7 +54,8 @@ export function makeAssetData(props: AssetProps): AssetData {
   }
 }
 
-export function Asset(props: AssetProps) {
+// deno-lint-ignore no-explicit-any
+export function Asset(props: AssetProps): any {
   return $reduce((data: ReturnType<typeof Assets>) => {
     data.assets ??= {};
     data.assets[props.path] = makeAssetData(props);
