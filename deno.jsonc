@@ -14,5 +14,8 @@
     "std/": "https://deno.land/std@0.217.0/",
     "jsonx/": "./lib/",
     "jsonx/jsx-runtime": "./lib/std/runtime/mod.ts"
+  },
+  "tasks": {
+    "test": "deno test -A"
   }
 }

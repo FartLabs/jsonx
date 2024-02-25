@@ -1,5 +1,6 @@
 import { assertEquals } from "std/assert/mod.ts";
 import { Asset, Assets } from "./components.ts";
+import { AssetKind, EncodingType } from "jsonx/std/assets/mod.ts";
 
 function Example1() {
   return (
@@ -60,8 +61,8 @@ Deno.test("Compose one asset", () => {
   const expected = {
     assets: {
       "example1.ts": {
-        kind: "file",
-        encoding: "utf-8",
+        kind: AssetKind.FILE,
+        encoding: EncodingType.UTF8,
         content: 'console.log("Example1");\n',
       },
     },
@@ -74,9 +75,9 @@ Deno.test("Compose asset in a fragment", () => {
   const expected = {
     assets: {
       "example4.ts": {
+        kind: AssetKind.FILE,
+        encoding: EncodingType.UTF8,
         content: 'console.log("Example4");\n',
-        encoding: "utf-8",
-        kind: "file",
       },
     },
   };
@@ -95,24 +96,24 @@ Deno.test("Assets compose children successfully", () => {
   const expected = {
     assets: {
       "example1.ts": {
-        kind: "file",
-        encoding: "utf-8",
+        kind: AssetKind.FILE,
+        encoding: EncodingType.UTF8,
         content: 'console.log("Example1");\n',
       },
       "example2.ts": {
-        kind: "file",
-        encoding: "utf-8",
+        kind: AssetKind.FILE,
+        encoding: EncodingType.UTF8,
         content: 'console.log("Example2");\n',
       },
       "example3.ts": {
-        kind: "file",
-        encoding: "utf-8",
+        kind: AssetKind.FILE,
+        encoding: EncodingType.UTF8,
         content: 'console.log("Example3");\n',
       },
       "example4.ts": {
+        kind: AssetKind.FILE,
+        encoding: EncodingType.UTF8,
         content: 'console.log("Example4");\n',
-        encoding: "utf-8",
-        kind: "file",
       },
     },
   };

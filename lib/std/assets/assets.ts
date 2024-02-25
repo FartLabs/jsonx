@@ -41,7 +41,7 @@ export type AssetsData = Record<string, AssetData>;
  * @see
  * https://github.com/denoland/deployctl/blob/3d0ba0f19e530bbfe94b241df1467dec3a8c6b4f/action/deps.js#L3998
  */
-export async function calculateGitSha1(bytes: Uint8Array) {
+export async function calculateGitSha1(bytes: Uint8Array): Promise<string> {
   const prefix = `blob ${bytes.byteLength}\0`;
   const prefixBytes = new TextEncoder().encode(prefix);
   const fullBytes = new Uint8Array(prefixBytes.byteLength + bytes.byteLength);
