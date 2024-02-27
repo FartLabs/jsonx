@@ -57,6 +57,7 @@ export function makeAssetData(props: AssetProps): AssetData {
 // deno-lint-ignore no-explicit-any
 export function Asset(props: AssetProps): any {
   return $reduce((data: ReturnType<typeof Assets>) => {
+    data ??= {};
     data.assets ??= {};
     data.assets[props.path] = makeAssetData(props);
     return data;

@@ -44,8 +44,7 @@ function appendChildren<T extends object>(
 ) {
   // If the child is an element, append it to the parent element.
   if (!Array.isArray(children)) {
-    appendChildren(element, [children]);
-    return;
+    return appendChildren(element, [children]);
   }
 
   // Loose object type to array type conversion.
@@ -53,27 +52,35 @@ function appendChildren<T extends object>(
     children = Array.prototype.slice.call(children);
   }
 
-  // If the element is a reduction directive, apply it to itself.
-  const { [REDUCE as keyof T]: reduce, ...restElement } = element;
-  if (typeof reduce === "function") {
-    element = reduce(restElement);
-  }
+  // // If the element is a reduction directive, apply it to itself.
+  // const { [REDUCE as keyof T]: reduce, ...restElement } = element;
+  // if (typeof reduce === "function") {
+  //   element = reduce(restElement);
+  //   console.log("reduce", { element });
+  // }
 
   // Iterate through each child.
-  children.forEach((child) => {
+  for (const child of children) {
     if (!child) {
-      return;
+      continue;
     }
 
     // If child is an array of children, append them instead.
     if (Array.isArray(child)) {
-      appendChildren(element, child);
-      return;
+      element = deepMerge(element, appendChildren(element, child)) as T;
+      continue;
+    }
+
+    // If child is $reduce directive, apply to the parent element.
+    const { [REDUCE as keyof T]: childReduce } = child;
+    if (typeof childReduce === "function") {
+      element = deepMerge(element, childReduce(element)) as T;
+      continue;
     }
 
     // Apply the child to the parent element.
     element = deepMerge(element, child) as T;
-  });
+  }
 
   return element;
 }
@@ -98,6 +105,6 @@ export { createNode as jsx };
 export { createNode as jsxs };
 export { createNode as jsxDev };
 
-export function Fragment(props: any): any {
-  return createObject({}, props);
+export function Fragment(_: any): any {
+  return [];
 }
