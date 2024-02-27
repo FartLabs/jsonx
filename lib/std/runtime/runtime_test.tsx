@@ -54,7 +54,6 @@ Deno.test("Composes JSON array by $reduce directive", () => {
   assertEquals(actual, expected);
 });
 
-/*
 Deno.test("Composes JSON by $reduce directive calculation", () => {
   function Plus(props: { value: number }) {
     return $reduce((data: { value: number }) => {
@@ -82,9 +81,10 @@ Deno.test("Composes JSON by $reduce directive calculation", () => {
         <Plus value={1} />
         <Plus value={2} />
         <Times value={3} />
+        <Times value={4} />
       </>
     ),
-    { value: 6 },
+    { value: (((1 + 2) * 3) * 4) },
   );
 
   function One() {
@@ -101,4 +101,3 @@ Deno.test("Composes JSON by $reduce directive calculation", () => {
 
   assertEquals(<Five />, { value: 5 });
 });
-*/

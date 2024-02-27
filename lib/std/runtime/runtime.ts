@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 
-import { deepMerge } from "../../../deps.ts";
+// import { deepMerge } from "../../../deps.ts";
 import { REDUCE } from "./$reduce.ts";
 
 /**
@@ -38,6 +38,73 @@ export function createObject(
   return appendChildren(element, children);
 }
 
+// function reduceElements<T>(...elements: T[]) {
+//   return elements.reduce(
+//     (reduced: T, element: T): T => {
+//       const { [REDUCE as keyof T]: reduce } = element;
+//       if (typeof reduce === "function") {
+//         console.log({ reduced0: reduced });
+//         reduced = reduce(reduced);
+//         console.log({ reduced1: reduced });
+//         return reduced as T;
+//         // return reduce(reduced);
+
+//         // return deepMerge(
+//         //   reduced as Record<PropertyKey, unknown>,
+//         //   restElement,
+//         // ));
+//       }
+
+//       return deepMerge(
+//         reduced as Record<PropertyKey, unknown>,
+//         element as Record<PropertyKey, unknown>,
+//       ) as T;
+//     },
+//     {} as T,
+//   );
+// }
+
+// function traverseChildren<T>(node: Node, callback: (childrenResults: T[], accumulator?: T) => T, accumulator?: T): T {
+//   if (!node.children) {
+//     return accumulator ?? null; // Base case, return accumulator or null for leaf nodes
+//   }
+
+//   const results: T[] = [];
+//   for (const child of node.children) {
+//     const childResult = traverseChildren(child, callback, accumulator);
+//     if (childResult !== undefined) {
+//       results.push(childResult);
+//     }
+//   }
+
+//   return callback(results, accumulator);
+// }
+
+interface Node {
+  children?: Node[];
+  data?: any; // Replace with your actual data type
+}
+
+// function reduceChildren<T extends object>(
+//   children: T[],
+//   fn: (childrenResults: T[], accumulator?: T) => T,
+//   accumulator?: T,
+// ): T {
+//   if (!Array.isArray(children)) {
+//     return reduceChildren([children], fn, accumulator);
+//   }
+
+//   const results: T[] = [];
+//   for (const child of children) {
+//     const childResult = reduceChildren(child, fn, accumulator);
+//     if (childResult !== undefined) {
+//       results.push(childResult);
+//     }
+//   }
+
+//   return fn(results, accumulator);
+// }
+
 function appendChildren<T extends object>(
   element: T,
   children: T[],
@@ -52,34 +119,30 @@ function appendChildren<T extends object>(
     children = Array.prototype.slice.call(children);
   }
 
-  // // If the element is a reduction directive, apply it to itself.
-  const { [REDUCE as keyof T]: reduce, ...restElement } = element;
-  if (typeof reduce === "function") {
-    element = reduce(restElement);
-  }
+  // TODO: Apply the $reduce directive to the parent element.
+  // Resolve children and use them to reduce the parent element. (I thought it was already recursive though.)
 
-  // Iterate through each child.
-  for (const child of children) {
-    if (!child) {
+  // If the element is a reduction directive, apply it to itself by walking the graph backwards.
+  const stack: T[] = [...children];
+  while (stack.length) {
+    const nextElement = stack.pop() as T;
+    if (Array.isArray(nextElement)) {
+      stack.push(...nextElement);
       continue;
     }
 
-    // If child is an array of children, append them instead.
-    if (Array.isArray(child)) {
-      element = deepMerge(element, appendChildren(element, child)) as T;
-      continue;
+    const { [REDUCE as keyof T]: reduce } = nextElement;
+    if (typeof reduce === "function") {
+      element = reduce(element);
     }
-
-    // // If child is $reduce directive, apply to the parent element.
-    // const { [REDUCE as keyof T]: childReduce } = child;
-    // if (typeof childReduce === "function") {
-    //   element = deepMerge(element, childReduce(element)) as T;
-    //   continue;
-    // }
-
-    // Apply the child to the parent element.
-    element = deepMerge(element, child) as T;
   }
+
+  // // If child is an array of children, append them instead.
+  // if (Array.isArray(child)) {
+  //   const nextElement = appendChildren(element, child);
+  //   element = deepMerge(element, nextElement) as T;
+  //   continue;
+  // }
 
   return element;
 }
