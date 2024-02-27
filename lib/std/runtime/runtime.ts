@@ -53,11 +53,10 @@ function appendChildren<T extends object>(
   }
 
   // // If the element is a reduction directive, apply it to itself.
-  // const { [REDUCE as keyof T]: reduce, ...restElement } = element;
-  // if (typeof reduce === "function") {
-  //   element = reduce(restElement);
-  //   console.log("reduce", { element });
-  // }
+  const { [REDUCE as keyof T]: reduce, ...restElement } = element;
+  if (typeof reduce === "function") {
+    element = reduce(restElement);
+  }
 
   // Iterate through each child.
   for (const child of children) {
@@ -71,12 +70,12 @@ function appendChildren<T extends object>(
       continue;
     }
 
-    // If child is $reduce directive, apply to the parent element.
-    const { [REDUCE as keyof T]: childReduce } = child;
-    if (typeof childReduce === "function") {
-      element = deepMerge(element, childReduce(element)) as T;
-      continue;
-    }
+    // // If child is $reduce directive, apply to the parent element.
+    // const { [REDUCE as keyof T]: childReduce } = child;
+    // if (typeof childReduce === "function") {
+    //   element = deepMerge(element, childReduce(element)) as T;
+    //   continue;
+    // }
 
     // Apply the child to the parent element.
     element = deepMerge(element, child) as T;
