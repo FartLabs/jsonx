@@ -1,7 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
 
-// import { deepMerge } from "../../../deps.ts";
+import { deepMerge } from "../../../deps.ts";
 import { REDUCE } from "./$reduce.ts";
+import { reduceNode } from "./node.ts";
 
 /**
  * createObject is a function that represents the JSONX runtime.
@@ -35,75 +36,16 @@ export function createObject(
   const element = typeof tagNameOrComponent === "function"
     ? tagNameOrComponent(props)
     : {};
-  return appendChildren(element, children);
+  const $ = appendChildren(element, children);
+  // TODO: Figure out which $reduce is here and why.
+  console.log({
+    $,
+    element,
+    children,
+    fn: $?.[REDUCE as keyof any]?.toString(),
+  });
+  return $;
 }
-
-// function reduceElements<T>(...elements: T[]) {
-//   return elements.reduce(
-//     (reduced: T, element: T): T => {
-//       const { [REDUCE as keyof T]: reduce } = element;
-//       if (typeof reduce === "function") {
-//         console.log({ reduced0: reduced });
-//         reduced = reduce(reduced);
-//         console.log({ reduced1: reduced });
-//         return reduced as T;
-//         // return reduce(reduced);
-
-//         // return deepMerge(
-//         //   reduced as Record<PropertyKey, unknown>,
-//         //   restElement,
-//         // ));
-//       }
-
-//       return deepMerge(
-//         reduced as Record<PropertyKey, unknown>,
-//         element as Record<PropertyKey, unknown>,
-//       ) as T;
-//     },
-//     {} as T,
-//   );
-// }
-
-// function traverseChildren<T>(node: Node, callback: (childrenResults: T[], accumulator?: T) => T, accumulator?: T): T {
-//   if (!node.children) {
-//     return accumulator ?? null; // Base case, return accumulator or null for leaf nodes
-//   }
-
-//   const results: T[] = [];
-//   for (const child of node.children) {
-//     const childResult = traverseChildren(child, callback, accumulator);
-//     if (childResult !== undefined) {
-//       results.push(childResult);
-//     }
-//   }
-
-//   return callback(results, accumulator);
-// }
-
-interface Node {
-  children?: Node[];
-  data?: any; // Replace with your actual data type
-}
-
-// function reduceChildren<T extends object>(
-//   children: T[],
-//   fn: (childrenResults: T[], accumulator?: T) => T,
-//   accumulator?: T,
-// ): T {
-//   if (!Array.isArray(children)) {
-//     return reduceChildren([children], fn, accumulator);
-//   }
-
-//   const results: T[] = [];
-//   for (const child of children) {
-//     const childResult = reduceChildren(child, fn, accumulator);
-//     if (childResult !== undefined) {
-//       results.push(childResult);
-//     }
-//   }
-
-//   return fn(results, accumulator);
-// }
 
 function appendChildren<T extends object>(
   element: T,
@@ -119,32 +61,108 @@ function appendChildren<T extends object>(
     children = Array.prototype.slice.call(children);
   }
 
-  // TODO: Apply the $reduce directive to the parent element.
-  // Resolve children and use them to reduce the parent element. (I thought it was already recursive though.)
+  // Resolve children and use them to reduce the parent element.
+  let result = reduceNode(
+    element,
+    children.map(({ children, ...child }: any) => ({
+      value: child,
+      children,
+    })),
+    childrenReducer,
+  );
 
-  // If the element is a reduction directive, apply it to itself by walking the graph backwards.
-  const stack: T[] = [...children];
-  while (stack.length) {
-    const nextElement = stack.pop() as T;
-    if (Array.isArray(nextElement)) {
-      stack.push(...nextElement);
-      continue;
-    }
+  // delete result[REDUCE as keyof T];
+  console.log({
+    "?": {
+      result,
+      element,
+      resultFn: result[REDUCE as keyof T]?.toString(),
+      elementFn: element[REDUCE as keyof T]?.toString(),
+    },
+  });
 
-    const { [REDUCE as keyof T]: reduce } = nextElement;
-    if (typeof reduce === "function") {
-      element = reduce(element);
-    }
+  // Reduce element if it has a REDUCE directive.
+  const { [REDUCE as keyof T]: reduce } = element;
+  if (typeof reduce === "function") {
+    // console.log({ z: { element, reducedChildren } });
+    // const result = reduce(reducedChildren);
+    // console.log({ "FUCKKK": { result, reducedChildren } });
+    // return result;
+    // return reduce(reducedChildren);
+    console.log("FUCKKK!!!");
+    result = reduce(result);
   }
 
-  // // If child is an array of children, append them instead.
-  // if (Array.isArray(child)) {
-  //   const nextElement = appendChildren(element, child);
-  //   element = deepMerge(element, nextElement) as T;
-  //   continue;
-  // }
+  // const { [REDUCE as keyof T]: _, ...restResult } = result;
+  // console.log({ restResult });
+  // return deepMerge(element, restResult);
 
-  return element;
+  // Remove leftover $reduce directive from the result.
+  // delete result[REDUCE as keyof T];
+  // console.log({ result, element });
+  // return result;
+  return deepMerge(element, result);
+}
+
+export function reduceChildren<T extends object>(
+  element: T,
+  children: T[],
+): T {
+  // Resolve children and use them to reduce the parent element.
+  let result = reduceNode(
+    element,
+    children.map(({ children, ...child }: any) => ({
+      value: child,
+      children,
+    })),
+    childrenReducer,
+  );
+
+  // Reduce element if it has a REDUCE directive.
+  const { [REDUCE as keyof T]: reduce } = result;
+  if (typeof reduce === "function") {
+    // console.log({ z: { element, reducedChildren } });
+    // const result = reduce(reducedChildren);
+    // console.log({ "FUCKKK": { result, reducedChildren } });
+    // return result;
+    // return reduce(reducedChildren);
+    result = reduce(result);
+  }
+
+  return result;
+}
+
+function childrenReducer<T>(result: T, value: T): T {
+  if (!value) {
+    return result;
+  }
+
+  if (!((value as T)[REDUCE as keyof T])) {
+    // const reduceResult = value;
+    // console.log({ reduceResult, reduced: false });
+    return value;
+    // return deepMerge(result as T, value as T);
+  }
+
+  const { [REDUCE as keyof T]: reduce } = value as T;
+  if (typeof reduce !== "function") {
+    throw new Error("Invalid reduce directive");
+  }
+
+  const reduceResult = reduce(result as T);
+  // const mergeResult = deepMerge(
+  //   result as Record<PropertyKey, unknown>,
+  //   reduceResult,
+  // );
+
+  const mergeResult = deepMerge(
+    result as Record<PropertyKey, unknown>,
+    reduceResult,
+  );
+  // console.log({ reduceResult, result, reduced: true });
+  return mergeResult as T;
+  // return reduceResult;
+  // return reduce(result as T);
 }
 
 function createNode(

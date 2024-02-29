@@ -1,4 +1,3 @@
-import { $reduce } from "../../std/runtime/mod.ts";
 import type { AssetData, AssetsData } from "./assets.ts";
 import { AssetKind, EncodingType } from "./assets.ts";
 
@@ -56,10 +55,9 @@ export function makeAssetData(props: AssetProps): AssetData {
 
 // deno-lint-ignore no-explicit-any
 export function Asset(props: AssetProps): any {
-  return $reduce((data: ReturnType<typeof Assets>) => {
-    data ??= {};
-    data.assets ??= {};
-    data.assets[props.path] = makeAssetData(props);
-    return data;
-  });
+  return {
+    assets: {
+      [props.path]: makeAssetData(props),
+    },
+  };
 }
