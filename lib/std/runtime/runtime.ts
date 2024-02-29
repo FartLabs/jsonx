@@ -38,12 +38,12 @@ export function createObject(
     : {};
   const $ = appendChildren(element, children);
   // TODO: Figure out which $reduce is here and why.
-  console.log({
-    $,
-    element,
-    children,
-    fn: $?.[REDUCE as keyof any]?.toString(),
-  });
+  // console.log({
+  //   $,
+  //   element,
+  //   children,
+  //   fn: $?.[REDUCE as keyof any]?.toString(),
+  // });
   return $;
 }
 
@@ -62,55 +62,16 @@ function appendChildren<T extends object>(
   }
 
   // Resolve children and use them to reduce the parent element.
-  let result = reduceNode(
-    element,
-    children.map(({ children, ...child }: any) => ({
-      value: child,
-      children,
-    })),
-    childrenReducer,
-  );
-
-  // delete result[REDUCE as keyof T];
-  console.log({
-    "?": {
-      result,
-      element,
-      resultFn: result[REDUCE as keyof T]?.toString(),
-      elementFn: element[REDUCE as keyof T]?.toString(),
-    },
-  });
-
-  // Reduce element if it has a REDUCE directive.
-  const { [REDUCE as keyof T]: reduce } = element;
-  if (typeof reduce === "function") {
-    // console.log({ z: { element, reducedChildren } });
-    // const result = reduce(reducedChildren);
-    // console.log({ "FUCKKK": { result, reducedChildren } });
-    // return result;
-    // return reduce(reducedChildren);
-    console.log("FUCKKK!!!");
-    result = reduce(result);
-  }
-
-  // const { [REDUCE as keyof T]: _, ...restResult } = result;
-  // console.log({ restResult });
-  // return deepMerge(element, restResult);
-
-  // Remove leftover $reduce directive from the result.
-  // delete result[REDUCE as keyof T];
-  // console.log({ result, element });
-  // return result;
-  return deepMerge(element, result);
+  return reduceChildren(element, children);
 }
 
 export function reduceChildren<T extends object>(
-  element: T,
+  initial: T,
   children: T[],
 ): T {
   // Resolve children and use them to reduce the parent element.
   let result = reduceNode(
-    element,
+    initial,
     children.map(({ children, ...child }: any) => ({
       value: child,
       children,
@@ -118,17 +79,36 @@ export function reduceChildren<T extends object>(
     childrenReducer,
   );
 
-  // Reduce element if it has a REDUCE directive.
-  const { [REDUCE as keyof T]: reduce } = result;
+  console.log({ result0: result });
+
+  // First, reduce the running result.
+  let reduce = result[REDUCE as keyof T];
   if (typeof reduce === "function") {
-    // console.log({ z: { element, reducedChildren } });
-    // const result = reduce(reducedChildren);
-    // console.log({ "FUCKKK": { result, reducedChildren } });
-    // return result;
-    // return reduce(reducedChildren);
     result = reduce(result);
   }
 
+  console.log({ result1: result });
+
+  // Then, reduce the parent element.
+  reduce = initial[REDUCE as keyof T];
+  if (typeof reduce === "function") {
+    result = reduce(result);
+  }
+
+  console.log({ result2: result });
+
+  // Reduce $reduce directive.
+  // const { [REDUCE as keyof T]: reduce } = result;
+  // if (typeof reduce === "function") {
+  //   result = reduce(result);
+  // }
+
+  // Apply deep merge on the existing value.
+  result = deepMerge(initial, result) as T;
+
+  // Delete the $reduce directive.
+  delete result[REDUCE as keyof T];
+  console.log({ result3: result });
   return result;
 }
 
@@ -137,32 +117,21 @@ function childrenReducer<T>(result: T, value: T): T {
     return result;
   }
 
-  if (!((value as T)[REDUCE as keyof T])) {
-    // const reduceResult = value;
-    // console.log({ reduceResult, reduced: false });
+  if (!(value[REDUCE as keyof T])) {
     return value;
-    // return deepMerge(result as T, value as T);
   }
 
-  const { [REDUCE as keyof T]: reduce } = value as T;
+  const { [REDUCE as keyof T]: reduce } = value;
   if (typeof reduce !== "function") {
     throw new Error("Invalid reduce directive");
   }
 
-  const reduceResult = reduce(result as T);
-  // const mergeResult = deepMerge(
-  //   result as Record<PropertyKey, unknown>,
-  //   reduceResult,
-  // );
-
+  const reduceResult = reduce(result);
   const mergeResult = deepMerge(
     result as Record<PropertyKey, unknown>,
     reduceResult,
   );
-  // console.log({ reduceResult, result, reduced: true });
   return mergeResult as T;
-  // return reduceResult;
-  // return reduce(result as T);
 }
 
 function createNode(
