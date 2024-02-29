@@ -1,4 +1,4 @@
-import { assertEquals } from "../../../developer_deps.ts";
+import { assert, assertEquals } from "../../../developer_deps.ts";
 import { $reduce } from "./$reduce.ts";
 
 Deno.test("Composes JSON data by deep merge", () => {
@@ -48,43 +48,68 @@ Deno.test("Composes JSON array data by $reduce directive", () => {
   assertEquals(actual, expected);
 });
 
-Deno.test("Composes JSON by $reduce directive", () => {
-  function Plus(props: { value: number }) {
-    return $reduce((data: { value: number }) => {
-      console.log(`${data?.value ?? 0} + ${props.value}`);
-      return {
-        value: (data?.value ?? 0) + props.value,
-      };
-    });
-    // return $reduce((data: { value: number }) => ({
-    //   value: (data?.value ?? 0) + props.value,
-    // }));
-  }
+function Plus(props: { value?: number }) {
+  return $reduce((data: { value: number }) => {
+    console.log(`${data?.value ?? 0} + ${props.value}`);
+    return {
+      value: (data?.value ?? 0) + (props.value ?? 0),
+    };
+  });
+  // return $reduce((data: { value: number }) => ({
+  //   value: (data?.value ?? 0) + props.value,
+  // }));
+}
 
-  function Times(props: { value: number }) {
-    // Reduce directive allows component to access the
-    // runtime value of the immediate object when this component
-    // is reached.
-    return $reduce((data: { value: number }) => {
-      console.log(`${data?.value ?? 1} * ${props.value}`);
-      return {
-        value: (data?.value ?? 1) * props.value,
-      };
-    });
-    // return $reduce((data: { value: number }) => ({
-    //   value: (data?.value ?? 1) * props.value,
-    // }));
-  }
+function Times(props: { value?: number }) {
+  // Reduce directive allows component to access the
+  // runtime value of the immediate object when this component
+  // is reached.
+  return $reduce((data: { value: number }) => {
+    console.log(`${data?.value ?? 1} * ${props.value}`);
+    return {
+      value: (data?.value ?? 1) * (props.value ?? 1),
+    };
+  });
+  // return $reduce((data: { value: number }) => ({
+  //   value: (data?.value ?? 1) * props.value,
+  // }));
+}
 
+Deno.test("Composition respects commutative property", () => {
+  const v1 = (
+    <Times value={5}>
+      <Plus value={5} />
+    </Times>
+  );
+  const v2 = (
+    <Times value={5}>
+      <Times value={5} />
+    </Times>
+  );
+  const v3 = (
+    <>
+      <Plus value={5} />
+      <Times value={5} />
+    </>
+  );
+  assert(v1.value === v2.value);
+  assert(v2.value === v3.value);
+});
+
+Deno.test("Composes JSON by nested $reduce directive", () => {
   const actual = (
-    <Plus value={5}>
+    <Plus value={6}>
       <Plus value={1} />
       <Plus value={2} />
       <Times value={3} />
-      <Times value={4} />
+      <Plus>
+        <Times value={4}>
+          <Plus value={5} />
+        </Times>
+      </Plus>
     </Plus>
   );
-  const expected = { value: ((((1 + 2) * 3) * 4) + 5) };
+  const expected = { value: (((1 + 2) * 3) + (4 * 5) + 6) };
   // console.log(actual.$reduce.toString());
   assertEquals(actual, expected);
 

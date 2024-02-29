@@ -82,20 +82,20 @@ export function reduceChildren<T extends object>(
   console.log({ result0: result });
 
   // First, reduce the running result.
-  let reduce = result[REDUCE as keyof T];
+  const reduce = result[REDUCE as keyof T];
   if (typeof reduce === "function") {
     result = reduce(result);
   }
 
-  console.log({ result1: result });
+  // console.log({ result1: result });
 
   // Then, reduce the parent element.
-  reduce = initial[REDUCE as keyof T];
-  if (typeof reduce === "function") {
-    result = reduce(result);
-  }
+  // reduce = initial[REDUCE as keyof T];
+  // if (typeof reduce === "function") {
+  //   result = reduce(result);
+  // }
 
-  console.log({ result2: result });
+  // console.log({ result2: result });
 
   // Reduce $reduce directive.
   // const { [REDUCE as keyof T]: reduce } = result;
@@ -103,11 +103,11 @@ export function reduceChildren<T extends object>(
   //   result = reduce(result);
   // }
 
-  // Apply deep merge on the existing value.
+  // // Apply deep merge on the existing value.
   result = deepMerge(initial, result) as T;
 
   // Delete the $reduce directive.
-  delete result[REDUCE as keyof T];
+  // delete result[REDUCE as keyof T];
   console.log({ result3: result });
   return result;
 }
