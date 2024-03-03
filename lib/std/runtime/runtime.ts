@@ -4,41 +4,6 @@ import { deepMerge } from "../../../deps.ts";
 import { REDUCE } from "./$reduce.ts";
 import { reduceNode } from "./node.ts";
 
-/**
- * createObject is a function that represents the JSONX runtime.
- *
- * @see
- * https://github.com/nanojsx/nano/blob/2590dd9477970b2dc2a1d1ae5fb03b7c87a84174/src/core.ts#L196
- */
-export function createObject(
-  tagNameOrComponent: any,
-  props: any = {},
-  ...children: any[]
-): any {
-  // If children is passed as props, merge with ...children.
-  if (props?.children) {
-    const propsChildren = Array.isArray(props.children)
-      ? props.children
-      : [props.children];
-    children = [...children, ...propsChildren];
-
-    // Reflect the change in props.
-    if (Array.isArray(props.children)) {
-      props.children = [...children];
-    }
-  }
-
-  if (!props.children) {
-    props.children = children;
-  }
-
-  // Render component if tagNameOrComponent is a function.
-  const element = typeof tagNameOrComponent === "function"
-    ? tagNameOrComponent(props)
-    : {};
-  return appendChildren(element, children);
-}
-
 function appendChildren<T extends object>(
   element: T,
   children: T[],
@@ -72,16 +37,15 @@ export function reduceChildren<T extends object>(
   );
 }
 
-function reduceChild<T>(result: T, value: T): T {
+function reduceChild<T extends object>(result: T, value: T): T {
   if (!value) {
     return result;
   }
 
   if (!(value[REDUCE as keyof T])) {
-    // return value;
     return deepMerge(
       result as Record<PropertyKey, unknown>,
-      value, // as Record<PropertyKey, unknown>,
+      value as Record<PropertyKey, unknown>,
     ) as T;
   }
 
@@ -120,4 +84,39 @@ export { createNode as jsxDev };
 
 export function Fragment(_: any): any {
   return [];
+}
+
+/**
+ * createObject is a function that represents the JSONX runtime.
+ *
+ * @see
+ * https://github.com/nanojsx/nano/blob/2590dd9477970b2dc2a1d1ae5fb03b7c87a84174/src/core.ts#L196
+ */
+export function createObject(
+  tagNameOrComponent: any,
+  props: any = {},
+  ...children: any[]
+): any {
+  // If children is passed as props, merge with ...children.
+  if (props?.children) {
+    const propsChildren = Array.isArray(props.children)
+      ? props.children
+      : [props.children];
+    children = [...children, ...propsChildren];
+
+    // Reflect the change in props.
+    if (Array.isArray(props.children)) {
+      props.children = [...children];
+    }
+  }
+
+  if (!props.children) {
+    props.children = children;
+  }
+
+  // Render component if tagNameOrComponent is a function.
+  const element = typeof tagNameOrComponent === "function"
+    ? tagNameOrComponent(props)
+    : {};
+  return appendChildren(element, children);
 }

@@ -49,8 +49,12 @@ Deno.test("Composes JSON array data by $reduce directive", () => {
 });
 
 function Plus(props: { value?: number }) {
-  return $reduce((data: { value: number }) => {
+  return $reduce((data: { value?: number }) => {
     console.log(`${data?.value ?? 0} + ${props.value}`);
+    if (props?.value === undefined) {
+      return <Plus value={data?.value ?? 0} />;
+    }
+
     return {
       value: (data?.value ?? 0) + (props.value ?? 0),
     };
@@ -61,8 +65,12 @@ function Plus(props: { value?: number }) {
 }
 
 function Times(props: { value?: number }) {
-  return $reduce((data: { value: number }) => {
+  return $reduce((data: { value?: number }) => {
     console.log(`${data?.value ?? 1} * ${props.value}`);
+    if (props?.value === undefined) {
+      return <Times value={data?.value ?? 1} />;
+    }
+
     return {
       value: (data?.value ?? 1) * (props.value ?? 1),
     };
@@ -98,14 +106,13 @@ Deno.test("Composition respects commutative property", () => {
     </>
   );
 
-  function assertAllEqual(...values: unknown[]) {
-    const [first, ...restValues] = values;
-    for (const value of restValues) {
-      assertEquals(first, value);
+  function assertAllEqual<T>(expected: T, actuals: T[]) {
+    for (const actual of actuals) {
+      assertEquals(actual, expected);
     }
   }
 
-  assertAllEqual(25, v1.value, v2.value, v3.value, v4.value);
+  assertAllEqual(25, [v1.value, v2.value, v3.value, v4.value]);
 });
 
 Deno.test("Composes JSON by nested $reduce directive", () => {
