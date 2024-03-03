@@ -15,7 +15,7 @@ Deno.test("Local assets read from file system successfully", () => {
         kind: AssetKind.FILE,
         encoding: EncodingType.BASE64,
         content:
-          "PHNjcmlwdCBsYW5nPSJ0cyI+DQogIGV4cG9ydCBsZXQgbmFtZSA9ICd3b3JsZCc7DQo8L3NjcmlwdD4NCg0KPGgxPkhlbGxvIHtuYW1lfSE8L2gxPg0K",
+          "PHNjcmlwdCBsYW5nPSJ0cyI+CiAgZXhwb3J0IGxldCBuYW1lID0gJ3dvcmxkJzsKPC9zY3JpcHQ+Cgo8aDE+SGVsbG8ge25hbWV9ITwvaDE+Cg==",
       },
     },
   };

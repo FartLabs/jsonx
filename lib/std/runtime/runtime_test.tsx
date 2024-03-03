@@ -92,8 +92,18 @@ Deno.test("Composition respects commutative property", () => {
       <Times value={5} />
     </>
   );
+  const v4 = (
+    <>
+      <Plus value={5} />
+      <Times>
+        <Plus value={5} />
+      </Times>
+    </>
+  );
+  console.log({ v1, v2, v3, v4 });
   assert(v1.value === v2.value);
   assert(v2.value === v3.value);
+  assert(v3.value === v4.value);
 });
 
 Deno.test("Composes JSON by nested $reduce directive", () => {
