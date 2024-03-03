@@ -36,15 +36,7 @@ export function createObject(
   const element = typeof tagNameOrComponent === "function"
     ? tagNameOrComponent(props)
     : {};
-  const $ = appendChildren(element, children);
-  // TODO: Figure out which $reduce is here and why.
-  // console.log({
-  //   $,
-  //   element,
-  //   children,
-  //   fn: $?.[REDUCE as keyof any]?.toString(),
-  // });
-  return $;
+  return appendChildren(element, children);
 }
 
 function appendChildren<T extends object>(
@@ -70,7 +62,7 @@ export function reduceChildren<T extends object>(
   children: T[],
 ): T {
   // Resolve children and use them to reduce the parent element.
-  const result = reduceNode(
+  return reduceNode(
     initial,
     children.map(({ children, ...child }: any) => ({
       value: child,
@@ -78,38 +70,6 @@ export function reduceChildren<T extends object>(
     })),
     reduceChild,
   );
-
-  console.log({ result0: result });
-
-  // First, reduce the running result.
-  // const reduce = result[REDUCE as keyof T];
-  // if (typeof reduce === "function") {
-  //   result = reduce(result);
-  // }
-
-  // console.log({ result1: result });
-
-  // Then, reduce the parent element.
-  // reduce = initial[REDUCE as keyof T];
-  // if (typeof reduce === "function") {
-  //   result = reduce(result);
-  // }
-
-  // console.log({ result2: result });
-
-  // Reduce $reduce directive.
-  // const { [REDUCE as keyof T]: reduce } = result;
-  // if (typeof reduce === "function") {
-  //   result = reduce(result);
-  // }
-
-  // // Apply deep merge on the existing value.
-  // result = deepMerge(initial, result) as T;
-
-  // Delete the $reduce directive.
-  // delete result[REDUCE as keyof T];
-  console.log({ result3: result });
-  return result;
 }
 
 function reduceChild<T>(result: T, value: T): T {
@@ -130,12 +90,6 @@ function reduceChild<T>(result: T, value: T): T {
     throw new Error("Invalid reduce directive");
   }
 
-  // const reduceResult = reduce(result);
-  // const mergeResult = deepMerge(
-  //   result as Record<PropertyKey, unknown>,
-  //   reduceResult,
-  // );
-  // return mergeResult as T;
   return reduce(
     deepMerge(
       result as Record<PropertyKey, unknown>,

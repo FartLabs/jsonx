@@ -61,9 +61,6 @@ function Plus(props: { value?: number }) {
 }
 
 function Times(props: { value?: number }) {
-  // Reduce directive allows component to access the
-  // runtime value of the immediate object when this component
-  // is reached.
   return $reduce((data: { value: number }) => {
     console.log(`${data?.value ?? 1} * ${props.value}`);
     return {
@@ -125,20 +122,5 @@ Deno.test("Composes JSON by nested $reduce directive", () => {
     </Plus>
   );
   const expected = { value: (((1 + 2) * 3) + (4 * 5) + 6) };
-  // console.log(actual.$reduce.toString());
   assertEquals(actual, expected);
-
-  // function One() {
-  //   return <Plus value={1} />;
-  // }
-
-  // function Five() {
-  //   return (
-  //     <Times value={5}>
-  //       <One />
-  //     </Times>
-  //   );
-  // }
-
-  // assertEquals(<Five />, { value: 5 });
 });
