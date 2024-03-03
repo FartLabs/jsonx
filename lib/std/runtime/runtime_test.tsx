@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "../../../developer_deps.ts";
+import { assertEquals } from "../../../developer_deps.ts";
 import { $reduce } from "./$reduce.ts";
 
 Deno.test("Composes JSON data by deep merge", () => {
@@ -100,10 +100,15 @@ Deno.test("Composition respects commutative property", () => {
       </Times>
     </>
   );
-  console.log({ v1, v2, v3, v4 });
-  assert(v1.value === v2.value);
-  assert(v2.value === v3.value);
-  assert(v3.value === v4.value);
+
+  function assertAllEqual(...values: unknown[]) {
+    const [first, ...restValues] = values;
+    for (const value of restValues) {
+      assertEquals(first, value);
+    }
+  }
+
+  assertAllEqual(25, v1.value, v2.value, v3.value, v4.value);
 });
 
 Deno.test("Composes JSON by nested $reduce directive", () => {
