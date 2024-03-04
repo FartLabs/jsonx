@@ -1,31 +1,28 @@
-export interface Node<T> {
-  value: T;
-  children?: Node<T>[];
-}
+export type Node<T extends object> =
+  & T
+  & { children?: Node<T>[] };
 
-export function reduceNode<TValue, TResult>(
+export function reduceNode<TResult, TValue extends object>(
   initial: TResult,
   children: Node<TValue>[],
   fn: (result: TResult, value: TValue) => TResult,
 ): TResult {
-  // console.log({ initial, children });
   let result = initial;
-  function traverse(node: Node<TValue>): void {
-    if (Array.isArray(node.children)) {
-      node.children.forEach((child) => traverse(child));
+  function traverse({ children, ...node }: Node<TValue>): void {
+    if (Array.isArray(children)) {
+      children.forEach((child) => traverse(child));
     }
 
-    // console.log({ 0: { result, value: node.value } });
-    result = fn(result, node.value);
+    result = fn(result, node as TValue);
   }
 
-  children.forEach((node) => traverse(node));
+  children?.forEach((child) => traverse(child));
   return result;
 }
 
 if (import.meta.main) {
   // Test data
-  const input: Node<number>[] = [{
+  const input: Node<{ value: number }>[] = [{
     value: 1,
     children: [
       {
@@ -40,10 +37,13 @@ if (import.meta.main) {
 
   // Test the function
   const result = reduceNode(
-    "",
+    { value: "" },
     input,
-    (result: string, value: number) => result + value,
+    (result: { value: string }, value: { value: number }) => ({
+      value: result.value + value.value.toString(),
+    }),
   );
+
   console.log(result); // Output: "(((3) + 2) + 4) + 1"
 }
 

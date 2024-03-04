@@ -106,13 +106,13 @@ Deno.test("Composition respects commutative property", () => {
     </>
   );
 
-  function assertAllEqual<T>(expected: T, actuals: T[]) {
+  function assertEveryEquals<T>(expected: T, actuals: T[]) {
     for (const actual of actuals) {
       assertEquals(actual, expected);
     }
   }
 
-  assertAllEqual(25, [v1.value, v2.value, v3.value, v4.value]);
+  assertEveryEquals(25, [v1.value, v2.value, v3.value, v4.value]);
 });
 
 Deno.test("Composes JSON by nested $reduce directive", () => {
@@ -129,5 +129,6 @@ Deno.test("Composes JSON by nested $reduce directive", () => {
     </Plus>
   );
   const expected = { value: (((1 + 2) * 3) + (4 * 5) + 6) };
+  console.log("reduce: ", actual["$reduce"]());
   assertEquals(actual, expected);
 });

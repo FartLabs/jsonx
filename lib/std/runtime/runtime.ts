@@ -29,10 +29,7 @@ export function reduceChildren<T extends object>(
   // Resolve children and use them to reduce the parent element.
   return reduceNode(
     initial,
-    children.map(({ children, ...child }: any) => ({
-      value: child,
-      children,
-    })),
+    children,
     reduceChild,
   );
 }
@@ -42,24 +39,24 @@ function reduceChild<T extends object>(result: T, value: T): T {
     return result;
   }
 
-  if (!(value[REDUCE as keyof T])) {
-    return deepMerge(
-      result as Record<PropertyKey, unknown>,
-      value as Record<PropertyKey, unknown>,
-    ) as T;
-  }
-
   const { [REDUCE as keyof T]: reduce, ...restValue } = value;
-  if (typeof reduce !== "function") {
-    throw new Error("Invalid reduce directive");
+  if (reduce !== undefined) {
+    if (typeof reduce !== "function") {
+      throw new Error("Invalid reduce directive");
+    }
+
+    return reduce(
+      deepMerge(
+        result as Record<PropertyKey, unknown>,
+        restValue as Record<PropertyKey, unknown>,
+      ),
+    );
   }
 
-  return reduce(
-    deepMerge(
-      result as Record<PropertyKey, unknown>,
-      restValue as Record<PropertyKey, unknown>,
-    ),
-  );
+  return deepMerge(
+    result as Record<PropertyKey, unknown>,
+    value as Record<PropertyKey, unknown>,
+  ) as T;
 }
 
 function createNode(
