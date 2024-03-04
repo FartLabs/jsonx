@@ -5,12 +5,15 @@ import { REDUCE } from "./$reduce.ts";
 import { reduceNode } from "./node.ts";
 
 function appendChildren<T extends object>(
-  element: T,
+  result: T,
   children: T[],
 ) {
+  // I don't get it...
+  // console.log({ result, children });
+
   // If the child is an element, append it to the parent element.
   if (!Array.isArray(children)) {
-    return appendChildren(element, [children]);
+    return appendChildren(result, [children]);
   }
 
   // Loose object type to array type conversion.
@@ -19,7 +22,7 @@ function appendChildren<T extends object>(
   }
 
   // Resolve children and use them to reduce the parent element.
-  return reduceChildren(element, children);
+  return reduceChildren(result, children);
 }
 
 export function reduceChildren<T extends object>(
@@ -35,17 +38,26 @@ export function reduceChildren<T extends object>(
 }
 
 function reduceChild<T extends object>(result: T, value: T): T {
+  const { [REDUCE as keyof T]: reduceResult, ...restResult } = value;
+  result = restResult as T;
+  if (reduceResult !== undefined && typeof reduceResult === "function") {
+    result = reduceResult(result);
+  }
+
+  // I don't get it...
+  console.log({ result, value });
+
   if (!value) {
     return result;
   }
 
-  const { [REDUCE as keyof T]: reduce, ...restValue } = value;
-  if (reduce !== undefined) {
-    if (typeof reduce !== "function") {
+  const { [REDUCE as keyof T]: reduceValue, ...restValue } = value;
+  if (reduceValue !== undefined) {
+    if (typeof reduceValue !== "function") {
       throw new Error("Invalid reduce directive");
     }
 
-    return reduce(
+    return reduceValue(
       deepMerge(
         result as Record<PropertyKey, unknown>,
         restValue as Record<PropertyKey, unknown>,

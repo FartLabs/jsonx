@@ -48,9 +48,9 @@ Deno.test("Composes JSON array data by $reduce directive", () => {
   assertEquals(actual, expected);
 });
 
-function Plus(props: { value?: number }) {
+function Plus(props: { value?: number; label?: string }) {
   return $reduce((data: { value?: number }) => {
-    console.log(`${data?.value ?? 0} + ${props.value}`);
+    console.log(`${props.label}: ${data?.value ?? 0} + ${props.value}`);
     if (props?.value === undefined) {
       return <Plus value={data?.value ?? 0} />;
     }
@@ -64,9 +64,9 @@ function Plus(props: { value?: number }) {
   // }));
 }
 
-function Times(props: { value?: number }) {
+function Times(props: { value?: number; label?: string }) {
   return $reduce((data: { value?: number }) => {
-    console.log(`${data?.value ?? 1} * ${props.value}`);
+    console.log(`${props.label}: ${data?.value ?? 1} * ${props.value}`);
     if (props?.value === undefined) {
       return <Times value={data?.value ?? 1} />;
     }
@@ -82,26 +82,29 @@ function Times(props: { value?: number }) {
 
 Deno.test("Composition respects commutative property", () => {
   const v1 = (
-    <Times value={5}>
-      <Plus value={5} />
+    <Times value={5} label="5*x">
+      <Plus value={5} label="+5" />
     </Times>
   );
+  console.log("---");
   const v2 = (
-    <Times value={5}>
-      <Times value={5} />
+    <Times value={5} label="5*x">
+      <Times value={5} label="5*5" />
     </Times>
   );
+  console.log("---");
   const v3 = (
     <>
-      <Plus value={5} />
-      <Times value={5} />
+      <Plus value={5} label="+5" />
+      <Times value={5} label="5*x" />
     </>
   );
+  console.log("---");
   const v4 = (
     <>
-      <Plus value={5} />
-      <Times>
-        <Plus value={5} />
+      <Plus value={5} label="+5 outer" />
+      <Times label="x*y">
+        <Plus value={5} label="+5 inner" />
       </Times>
     </>
   );

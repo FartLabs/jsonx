@@ -7,7 +7,7 @@ export function reduceNode<TResult, TValue extends object>(
   children: Node<TValue>[],
   fn: (result: TResult, value: TValue) => TResult,
 ): TResult {
-  let result = initial;
+  let result = { ...initial };
   function traverse({ children, ...node }: Node<TValue>): void {
     if (Array.isArray(children)) {
       children.forEach((child) => traverse(child));
