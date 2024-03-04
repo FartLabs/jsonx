@@ -38,7 +38,10 @@ export function reduceChildren<T extends object>(
 }
 
 function reduceChild<T extends object>(result: T, value: T): T {
-  const { [REDUCE as keyof T]: reduceResult, ...restResult } = value;
+  const {
+    [REDUCE as keyof T]: reduceResult,
+    ...restResult
+  } = result;
   result = restResult as T;
   if (reduceResult !== undefined && typeof reduceResult === "function") {
     result = reduceResult(result);

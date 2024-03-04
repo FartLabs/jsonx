@@ -132,6 +132,6 @@ Deno.test("Composes JSON by nested $reduce directive", () => {
     </Plus>
   );
   const expected = { value: (((1 + 2) * 3) + (4 * 5) + 6) };
-  console.log("reduce: ", actual["$reduce"]());
+  console.log("reduce: ", actual["$reduce"]?.());
   assertEquals(actual, expected);
 });
