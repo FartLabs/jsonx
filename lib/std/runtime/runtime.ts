@@ -129,14 +129,15 @@ export function createObject(
     props.children = children;
   }
 
+  const value = typeof tagNameOrComponent === "function"
+    ? tagNameOrComponent(props)
+    : {};
+
+  // console.log("appending children: ", { value, children });
+
   // Render component node if tagNameOrComponent is a function.
   return appendChildren<any, any>(
     {},
-    {
-      ...(typeof tagNameOrComponent === "function"
-        ? tagNameOrComponent(props)
-        : {}),
-      children,
-    },
+    { ...value, children },
   );
 }

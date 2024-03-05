@@ -73,12 +73,18 @@ function Times(props: { value?: number; label?: string }) {
   });
 }
 
+// Speculation: It seems like we traded nesting for adjacency. Let's go
+// back into the commit history to see how we had adjacency working before.
 Deno.test("Composes JSON data by adjacent $reduce directives", () => {
   const actual = (
-    <>
+    // <>
+    //   <Plus value={5} label="+5" />
+    //   <Times value={5} label="5*x" />
+    // </>
+    <Plus value={0}>
       <Plus value={5} label="+5" />
       <Times value={5} label="5*x" />
-    </>
+    </Plus>
   );
   const expected = { value: 25 };
   assertEquals(actual, expected);
