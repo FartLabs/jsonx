@@ -21,6 +21,8 @@ function appendChildren<T extends object>(
     children = Array.prototype.slice.call(children);
   }
 
+  // TODO: Fix tbe usage.
+
   // Resolve children and use them to reduce the parent element.
   return reduceChildren(result, children);
 }
@@ -37,42 +39,49 @@ export function reduceChildren<T extends object>(
   );
 }
 
-function reduceChild<T extends object>(result: T, value: T): T {
-  const {
-    [REDUCE as keyof T]: reduceResult,
-    ...restResult
-  } = result;
-  result = restResult as T;
-  if (reduceResult !== undefined && typeof reduceResult === "function") {
-    result = reduceResult(result);
-  }
-
-  // I don't get it...
-  console.log({ result, value });
-
-  if (!value) {
-    return result;
-  }
-
-  const { [REDUCE as keyof T]: reduceValue, ...restValue } = value;
-  if (reduceValue !== undefined) {
-    if (typeof reduceValue !== "function") {
-      throw new Error("Invalid reduce directive");
-    }
-
-    return reduceValue(
-      deepMerge(
-        result as Record<PropertyKey, unknown>,
-        restValue as Record<PropertyKey, unknown>,
-      ),
-    );
+function reduceChild<TResult, TValue>(result: TResult, value: TValue): TResult {
+  // console.log({ shit: { result, value } });
+  // If the current value contains a REDUCE directive, reduce the result with it and deep merge the rest of the value.
+  const { [REDUCE as keyof TValue]: reduce, ...restValue } = value;
+  // const { [REDUCE as keyof TResult]: reduceResult, ...restResult } = result;
+  if (typeof reduce === "function") {
+    result = reduce(result);
   }
 
   return deepMerge(
     result as Record<PropertyKey, unknown>,
-    value as Record<PropertyKey, unknown>,
-  ) as T;
+    restValue as Record<PropertyKey, unknown>,
+  ) as TResult;
+
+  // const { [REDUCE as keyof TResult]: reduceResult, ...restResult } = result;
+  // if (typeof reduceResult === "function") {
+  //   result = reduceResult(restResult);
+  // }
 }
+
+// const { [REDUCE as keyof T]: reduceResult, ...restResult } = result;
+// if (value !== undefined) {
+//   const { [REDUCE as keyof T]: reduceValue, ...restValue } = value;
+//   if (typeof reduceValue === "function") {
+//     return reduceValue(
+//       deepMerge(
+//         result as Record<PropertyKey, unknown>,
+//         restValue as Record<PropertyKey, unknown>,
+//       ),
+//     );
+//   }
+// }
+
+// if (typeof reduceResult === "function") {
+//   result = reduceResult(restResult);
+// }
+
+// return result as T;
+
+// return deepMerge(
+//   result as Record<PropertyKey, unknown>,
+//   value as Record<PropertyKey, unknown>,
+// ) as T;
 
 function createNode(
   type: any,

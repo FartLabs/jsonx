@@ -4,7 +4,7 @@ export type Node<T extends object> =
 
 export function reduceNode<TResult, TValue extends object>(
   initial: TResult,
-  children: Node<TValue>[],
+  root: Node<TValue>,
   fn: (result: TResult, value: TValue) => TResult,
 ): TResult {
   let result = { ...initial };
@@ -16,29 +16,27 @@ export function reduceNode<TResult, TValue extends object>(
     result = fn(result, node as TValue);
   }
 
-  children?.forEach((child) => traverse(child));
+  root?.children?.forEach((child) => traverse(child));
+  result = fn(result, root as TValue);
   return result;
 }
 
 if (import.meta.main) {
-  // Test data
-  const input: Node<{ value: number }>[] = [{
-    value: 1,
-    children: [
-      {
-        value: 2,
-        children: [{ value: 3 }],
-      },
-      {
-        value: 4,
-      },
-    ],
-  }];
-
   // Test the function
   const result = reduceNode(
     { value: "" },
-    input,
+    {
+      value: 1,
+      children: [
+        {
+          value: 2,
+          children: [{ value: 3 }],
+        },
+        {
+          value: 4,
+        },
+      ],
+    },
     (result: { value: string }, value: { value: number }) => ({
       value: result.value + value.value.toString(),
     }),
