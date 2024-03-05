@@ -4,39 +4,33 @@ import { deepMerge } from "../../../deps.ts";
 import { REDUCE } from "./$reduce.ts";
 import { reduceNode } from "./node.ts";
 
-function appendChildren<T extends object>(
-  result: T,
-  children: T[],
+function appendChildren<TResult, TValue>(
+  initial: TResult,
+  root: TValue,
 ) {
   // I don't get it...
   // console.log({ result, children });
 
   // If the child is an element, append it to the parent element.
-  if (!Array.isArray(children)) {
-    return appendChildren(result, [children]);
+  if (!Array.isArray((root as any)?.children)) {
+    (root as any).children = [(root as any).children];
   }
 
   // Loose object type to array type conversion.
-  if (typeof children === "object") {
-    children = Array.prototype.slice.call(children);
+  if (typeof (root as any).children === "object") {
+    (root as any).children = Array.prototype.slice.call((root as any).children);
   }
 
-  // TODO: Fix tbe usage.
-
   // Resolve children and use them to reduce the parent element.
-  return reduceChildren(result, children);
+  return reduceChildren(initial, root);
 }
 
-export function reduceChildren<T extends object>(
-  initial: T,
-  children: T[],
-): T {
+export function reduceChildren<TResult, TValue>(
+  initial: TResult,
+  root: TValue,
+): TResult {
   // Resolve children and use them to reduce the parent element.
-  return reduceNode(
-    initial,
-    children,
-    reduceChild,
-  );
+  return reduceNode(initial, root as any, reduceChild);
 }
 
 function reduceChild<TResult, TValue>(result: TResult, value: TValue): TResult {
@@ -135,9 +129,14 @@ export function createObject(
     props.children = children;
   }
 
-  // Render component if tagNameOrComponent is a function.
-  const element = typeof tagNameOrComponent === "function"
-    ? tagNameOrComponent(props)
-    : {};
-  return appendChildren(element, children);
+  // Render component node if tagNameOrComponent is a function.
+  return appendChildren<any, any>(
+    {},
+    {
+      ...(typeof tagNameOrComponent === "function"
+        ? tagNameOrComponent(props)
+        : {}),
+      children,
+    },
+  );
 }
