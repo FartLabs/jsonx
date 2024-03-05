@@ -34,9 +34,13 @@ export function reduceChildren<TResult, TValue>(
 }
 
 function reduceChild<TResult, TValue>(result: TResult, value: TValue): TResult {
-  // console.log({ shit: { result, value } });
   // If the current value contains a REDUCE directive, reduce the result with it and deep merge the rest of the value.
   const { [REDUCE as keyof TValue]: reduce, ...restValue } = value;
+
+  // Compare with
+  // https://github.com/FartLabs/jsonx/blob/bd5cd2533aa6484653c4f64b5a2f037fecbfcaba/lib/std/runtime/runtime.ts
+  console.log({ shit: { result, value, reduce: reduce?.toString() } });
+
   // const { [REDUCE as keyof TResult]: reduceResult, ...restResult } = result;
   if (typeof reduce === "function") {
     result = reduce(result);
