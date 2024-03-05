@@ -1,10 +1,9 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { deepMerge } from "../../../deps.ts";
-import { REDUCE } from "./$reduce.ts";
 import { reduceNode } from "./node.ts";
 
-function appendChildren<TResult, TValue>(
+function resolveChildren<TResult, TValue>(
   initial: TResult,
   root: TValue,
 ) {
@@ -22,64 +21,15 @@ function appendChildren<TResult, TValue>(
   }
 
   // Resolve children and use them to reduce the parent element.
-  return reduceChildren(initial, root);
-}
-
-export function reduceChildren<TResult, TValue>(
-  initial: TResult,
-  root: TValue,
-): TResult {
-  // Resolve children and use them to reduce the parent element.
   return reduceNode(initial, root as any, reduceChild);
 }
 
 function reduceChild<TResult, TValue>(result: TResult, value: TValue): TResult {
-  // If the current value contains a REDUCE directive, reduce the result with it and deep merge the rest of the value.
-  const { [REDUCE as keyof TValue]: reduce, ...restValue } = value;
-
-  // Compare with
-  // https://github.com/FartLabs/jsonx/blob/bd5cd2533aa6484653c4f64b5a2f037fecbfcaba/lib/std/runtime/runtime.ts
-  console.log({ shit: { result, value, reduce: reduce?.toString() } });
-
-  // const { [REDUCE as keyof TResult]: reduceResult, ...restResult } = result;
-  if (typeof reduce === "function") {
-    result = reduce(result);
-  }
-
   return deepMerge(
     result as Record<PropertyKey, unknown>,
-    restValue as Record<PropertyKey, unknown>,
+    value as Record<PropertyKey, unknown>,
   ) as TResult;
-
-  // const { [REDUCE as keyof TResult]: reduceResult, ...restResult } = result;
-  // if (typeof reduceResult === "function") {
-  //   result = reduceResult(restResult);
-  // }
 }
-
-// const { [REDUCE as keyof T]: reduceResult, ...restResult } = result;
-// if (value !== undefined) {
-//   const { [REDUCE as keyof T]: reduceValue, ...restValue } = value;
-//   if (typeof reduceValue === "function") {
-//     return reduceValue(
-//       deepMerge(
-//         result as Record<PropertyKey, unknown>,
-//         restValue as Record<PropertyKey, unknown>,
-//       ),
-//     );
-//   }
-// }
-
-// if (typeof reduceResult === "function") {
-//   result = reduceResult(restResult);
-// }
-
-// return result as T;
-
-// return deepMerge(
-//   result as Record<PropertyKey, unknown>,
-//   value as Record<PropertyKey, unknown>,
-// ) as T;
 
 function createNode(
   type: any,
@@ -140,7 +90,7 @@ export function createObject(
   // console.log("appending children: ", { value, children });
 
   // Render component node if tagNameOrComponent is a function.
-  return appendChildren<any, any>(
+  return resolveChildren<any, any>(
     {},
     { ...value, children },
   );
