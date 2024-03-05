@@ -48,9 +48,9 @@ Deno.test("Composes JSON array data by $reduce directive", () => {
   assertEquals(actual, expected);
 });
 
+// TODO: Remove debug label property.
 function Plus(props: { value?: number; label?: string }) {
   return $reduce((data: { value?: number }) => {
-    // console.log(`${props.label}: ${data?.value ?? 0} + ${props.value}`);
     if (props?.value === undefined) {
       return <Plus value={data?.value ?? 0} />;
     }
@@ -59,14 +59,10 @@ function Plus(props: { value?: number; label?: string }) {
       value: (data?.value ?? 0) + props.value,
     };
   });
-  // return $reduce((data: { value: number }) => ({
-  //   value: (data?.value ?? 0) + props.value,
-  // }));
 }
 
 function Times(props: { value?: number; label?: string }) {
   return $reduce((data: { value?: number }) => {
-    // console.log(`${props.label}: ${data?.value ?? 1} * ${props.value}`);
     if (props?.value === undefined) {
       return <Times value={data?.value ?? 1} />;
     }
@@ -75,10 +71,18 @@ function Times(props: { value?: number; label?: string }) {
       value: (data?.value ?? 1) * props.value,
     };
   });
-  // return $reduce((data: { value: number }) => ({
-  //   value: (data?.value ?? 1) * props.value,
-  // }));
 }
+
+Deno.test("Composes JSON data by adjacent $reduce directives", () => {
+  const actual = (
+    <>
+      <Plus value={5} label="+5" />
+      <Times value={5} label="5*x" />
+    </>
+  );
+  const expected = { value: 25 };
+  assertEquals(actual, expected);
+});
 
 Deno.test("Composes JSON data by nested $reduce directive (depth 1)", () => {
   const actual = (
@@ -89,6 +93,32 @@ Deno.test("Composes JSON data by nested $reduce directive (depth 1)", () => {
   const expected = { value: 25 };
   assertEquals(actual, expected);
 });
+
+/*
+Deno.test("Composes JSON data by nested $reduce directive (depth many)", () => {
+  const actual = (
+    <Plus value={6}>
+      <Plus value={1} />
+      <Plus value={2} />
+      <Times value={3} />
+      <>
+        <Plus value={2} />
+        <Times value={3} />
+      </>
+      <Plus>
+        <Times value={4}>
+          <Plus value={5} />
+        </Times>
+      </Plus>
+    </Plus>
+  );
+  const expected = {
+    value: (((2 * 3) + 1) + (5 * 4)) + 6,
+    // value: (((1 + 2) * 3) + (5 * 4)) + 6,
+  };
+  assertEquals(actual, expected);
+});
+*/
 
 /*
 Deno.test("Composition respects commutative property", () => {
