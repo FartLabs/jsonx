@@ -7,9 +7,6 @@ function resolveChildren<TResult, TValue>(
   initial: TResult,
   root: TValue,
 ) {
-  // I don't get it...
-  // console.log({ result, children });
-
   // If the child is an element, append it to the parent element.
   if (!Array.isArray((root as any)?.children)) {
     (root as any).children = [(root as any).children];
@@ -86,8 +83,6 @@ export function createObject(
   const value = typeof tagNameOrComponent === "function"
     ? tagNameOrComponent(props)
     : {};
-
-  // console.log("appending children: ", { value, children });
 
   // Render component node if tagNameOrComponent is a function.
   return resolveChildren<any, any>(
