@@ -24,20 +24,41 @@ Deno.test("Composes JSON array data by deep merge", () => {
   assertEquals(actual, expected);
 });
 
+function Cat() {
+  return { animals: ["🐈"] };
+}
+
+function Dog() {
+  return { animals: ["🐕"] };
+}
+
 Deno.test("Composes JSON array data by createObject", () => {
-  function Cat() {
-    return { animals: ["🐈"] };
-  }
+  const actual = <Cat />;
+  const expected = { animals: ["🐈"] };
+  assertEquals(actual, expected);
+});
 
-  function Dog() {
-    return { animals: ["🐕"] };
-  }
-
+Deno.test("Composes JSON array data by createObject in a fragment", () => {
   const actual = (
     <>
       <Cat />
       <Dog />
     </>
+  );
+  const expected = { animals: ["🐈", "🐕"] };
+  assertEquals(actual, expected);
+});
+
+Deno.test("Composes JSON array data by createObject in children", () => {
+  function Zoo() {
+    return {};
+  }
+
+  const actual = (
+    <Zoo>
+      <Cat />
+      <Dog />
+    </Zoo>
   );
   const expected = { animals: ["🐈", "🐕"] };
   assertEquals(actual, expected);
