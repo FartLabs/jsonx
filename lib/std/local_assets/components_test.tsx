@@ -1,8 +1,8 @@
 import { assertEquals } from "../../../developer_deps.ts";
-import { AssetKind, EncodingType } from "../assets/mod.ts";
+import { AssetKind, EncodingType } from "../assets/assets.ts";
 import { LocalAsset } from "./components.tsx";
 
-Deno.test("Local assets read from file system successfully", () => {
+Deno.test("LocalAsset reads from file system", () => {
   const actual = (
     <LocalAsset
       path="src/lib/components/hello.svelte"
