@@ -37,7 +37,7 @@ export function CheckWorkflow() {
 
 if (import.meta.main) {
   Deno.writeTextFileSync(
-    ".github/workflows/check.yaml",
+    Deno.args[0],
     stringify(<CheckWorkflow />, { lineWidth: 80 }),
   );
 }

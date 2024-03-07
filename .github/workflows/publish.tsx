@@ -34,7 +34,9 @@ export function DenoPublishStep() {
   };
 }
 
-Deno.writeTextFileSync(
-  ".github/workflows/publish.yaml",
-  stringify(<PublishWorkflow />, { lineWidth: 80 }),
-);
+if (import.meta.main) {
+  Deno.writeTextFileSync(
+    Deno.args[0],
+    stringify(<PublishWorkflow />, { lineWidth: 80 }),
+  );
+}
