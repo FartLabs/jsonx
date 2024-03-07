@@ -16,6 +16,7 @@
     "jsonx/jsx-runtime": "./lib/std/runtime/mod.ts"
   },
   "tasks": {
-    "test": "deno test -A"
+    "test": "deno test -A",
+    "generate": "deno run -Ar https://deno.land/x/generate/cli/main.ts gen.ts"
   }
 }
