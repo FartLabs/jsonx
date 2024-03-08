@@ -3,31 +3,18 @@
 import { deepMerge } from "../../../deps.ts";
 import { reduceNode } from "./node.ts";
 
-function resolveChildren<TResult, TValue>(
-  initial: TResult,
-  root: TValue,
-) {
-  // If the child is an element, append it to the parent element.
-  if (!Array.isArray((root as any)?.children)) {
-    (root as any).children = [(root as any).children];
-  }
+export { createObject as h };
+export { createNode as jsx };
+export { createNode as jsxs };
+export { createNode as jsxDev };
 
-  // Loose object type to array type conversion.
-  if (typeof (root as any).children === "object") {
-    (root as any).children = Array.prototype.slice.call((root as any).children);
-  }
-
-  // Resolve children and use them to reduce the parent element.
-  return reduceNode(initial, root as any, reduceChild);
+export function Fragment(_: any): any {
+  return [];
 }
 
-function reduceChild<TResult, TValue>(result: TResult, value: TValue): TResult {
-  return deepMerge(
-    result as Record<PropertyKey, unknown>,
-    value as Record<PropertyKey, unknown>,
-  ) as TResult;
-}
-
+/**
+ * createNode is a function that represents the JSX runtime.
+ */
 function createNode(
   type: any,
   props: any,
@@ -41,15 +28,6 @@ function createNode(
   }
 
   return createObject(type, restProps, ...children);
-}
-
-export { createObject as h };
-export { createNode as jsx };
-export { createNode as jsxs };
-export { createNode as jsxDev };
-
-export function Fragment(_: any): any {
-  return [];
 }
 
 /**
@@ -89,4 +67,29 @@ export function createObject(
     {},
     { ...value, children },
   );
+}
+
+function resolveChildren<TResult, TValue>(
+  initial: TResult,
+  root: TValue,
+) {
+  // If the child is an element, append it to the parent element.
+  if (!Array.isArray((root as any)?.children)) {
+    (root as any).children = [(root as any).children];
+  }
+
+  // Loose object type to array type conversion.
+  if (typeof (root as any).children === "object") {
+    (root as any).children = Array.prototype.slice.call((root as any).children);
+  }
+
+  // Resolve children and use them to reduce the parent element.
+  return reduceNode(initial, root as any, reduceChild);
+}
+
+function reduceChild<TResult, TValue>(result: TResult, value: TValue): TResult {
+  return deepMerge(
+    result as Record<PropertyKey, unknown>,
+    value as Record<PropertyKey, unknown>,
+  ) as TResult;
 }

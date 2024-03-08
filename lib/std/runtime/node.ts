@@ -1,7 +1,13 @@
+/**
+ * Node is a generic tree node type.
+ */
 export type Node<T> =
   & T
   & { children?: Node<T>[] };
 
+/**
+ * reduceNode walks a tree and reduces it to a single value.
+ */
 export function reduceNode<TResult, TValue>(
   initial: TResult,
   root: Node<TValue>,
