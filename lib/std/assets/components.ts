@@ -5,8 +5,7 @@ export interface AssetsProps {
   data?: AssetsData;
 }
 
-// deno-lint-ignore no-explicit-any
-export function Assets(props: AssetsProps): any {
+export function Assets(props: AssetsProps): { assets: AssetsData } {
   return { assets: props.data ?? {} };
 }
 
@@ -53,8 +52,7 @@ export function makeAssetData(props: AssetProps): AssetData {
   }
 }
 
-// deno-lint-ignore no-explicit-any
-export function Asset(props: AssetProps): any {
+export function Asset(props: AssetProps): { assets: AssetsData } {
   return {
     assets: {
       [props.path]: makeAssetData(props),
