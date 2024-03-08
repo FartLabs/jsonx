@@ -31,7 +31,7 @@ function createNode(
 }
 
 /**
- * createObject is a function that represents the JSONX runtime.
+ * createObject is a function that represents the jsonx runtime.
  *
  * @see
  * https://github.com/nanojsx/nano/blob/2590dd9477970b2dc2a1d1ae5fb03b7c87a84174/src/core.ts#L196

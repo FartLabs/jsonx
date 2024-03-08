@@ -56,7 +56,7 @@ Deno.writeTextFileSync(
 );
 ```
 
-6\. Compile your jsonx by running the `.tsx` file.
+6\. Compile your jsonx by running the `.[j|t]sx` file.
 
 ```sh
 deno run --allow-write example.tsx
@@ -93,9 +93,10 @@ on the other hand, focuses on leveraging familiar languages and tools like
 Javascript and Typescript to achieve similar modularity and composition, with
 the benefit of being naturally embeddable within those environments.
 
-In fact, [json-jsx](https://github.com/alexstroukov/json-jsx) is a similar JSX
-library, but is specifically for projects using Babel while the jsonx library is
-for runtimes that support JSX transpilation, such as Deno.
+There's already a project, [json-jsx](https://github.com/alexstroukov/json-jsx),
+that offers similar functionality to jsonx. However, json-jsx is designed
+specifically for Babel projects, whereas jsonx targets JavaScript runtimes
+capable of JSX transpilation, like Deno.
 
 ## Contribute
 
