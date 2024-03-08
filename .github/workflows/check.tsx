@@ -1,11 +1,9 @@
 import { stringify } from "../../developer_deps.ts";
-import {
-  CheckoutStep,
-  DenoFormatStep,
-  DenoLintStep,
-  SetupDenoStep,
-} from "./shared.tsx";
+import { CheckoutStep, SetupDenoStep } from "./shared.tsx";
 
+/**
+ * CheckWorkflow is a GitHub workflow for the jsonx project.
+ */
 export function CheckWorkflow() {
   return {
     name: "Check",
@@ -32,6 +30,26 @@ export function CheckWorkflow() {
         ],
       },
     },
+  };
+}
+
+/**
+ * DenoFormatStep is a step that formats the code.
+ */
+export function DenoFormatStep() {
+  return {
+    name: "Format",
+    run: "deno fmt && git diff-index --quiet HEAD",
+  };
+}
+
+/**
+ * DenoLintStep is a step that lints the code.
+ */
+export function DenoLintStep() {
+  return {
+    name: "Lint",
+    run: "deno lint && git diff-index --quiet HEAD",
   };
 }
 
