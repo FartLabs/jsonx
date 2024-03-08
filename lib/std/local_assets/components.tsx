@@ -3,6 +3,9 @@ import { encodeBase64, expandGlobSync, normalize } from "../../../deps.ts";
 import type { AssetsData } from "../assets/mod.ts";
 import { Asset, AssetKind, EncodingType } from "../assets/mod.ts";
 
+/**
+ * LocalAssetProps represents the properties of the LocalAsset component.
+ */
 export interface LocalAssetProps {
   path: string;
   src: string | URL;
@@ -13,6 +16,9 @@ function getLocalAssetContentBase64(src: string | URL) {
   return encodeBase64(bytes);
 }
 
+/**
+ * LocalAsset is a component that represents a local asset.
+ */
 export function LocalAsset(props: LocalAssetProps): { assets: AssetsData } {
   const content = getLocalAssetContentBase64(props.src);
   return (
@@ -25,6 +31,9 @@ export function LocalAsset(props: LocalAssetProps): { assets: AssetsData } {
   );
 }
 
+/**
+ * LocalGlobProps represents the properties of the LocalGlob component.
+ */
 export interface LocalGlobProps extends ExpandGlobOptions {
   path?: string;
   glob: string | URL;
@@ -38,6 +47,9 @@ function getLocalGlob(props: LocalGlobProps) {
   return [...it];
 }
 
+/**
+ * LocalGlob is a component that represents a local glob of assets.
+ */
 export function LocalGlob(props: LocalGlobProps): { assets: AssetsData }[] {
   const assets = getLocalGlob(props);
   const root = props.root ? normalize(props.root) : "";
