@@ -4,7 +4,6 @@
   "version": "0.0.3",
   "exports": {
     "./jsx-runtime": "./lib/std/runtime/mod.ts",
-    "./std/runtime": "./lib/std/runtime/mod.ts",
     "./std/assets": "./lib/std/assets/mod.ts",
     "./std/local_assets": "./lib/std/local_assets/mod.ts"
   },
