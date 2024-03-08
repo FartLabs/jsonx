@@ -1,5 +1,3 @@
-export * from "./runtime.ts";
-
 /**
  * @module
  *
@@ -26,3 +24,5 @@ export * from "./runtime.ts";
  * );
  * ```
  */
+
+export * from "./runtime.ts";

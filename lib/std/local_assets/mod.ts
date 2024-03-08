@@ -1,5 +1,3 @@
-export * from "./components.tsx";
-
 /**
  * @module
  *
@@ -15,3 +13,5 @@ export * from "./components.tsx";
  * console.log(data);
  * ```
  */
+
+export * from "./components.tsx";

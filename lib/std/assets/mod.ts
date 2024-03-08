@@ -1,6 +1,3 @@
-export * from "./assets.ts";
-export * from "./components.ts";
-
 /**
  * @module
  *
@@ -20,3 +17,6 @@ export * from "./components.ts";
  * console.log(data);
  * ```
  */
+
+export * from "./assets.ts";
+export * from "./components.ts";
