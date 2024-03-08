@@ -1,9 +1,11 @@
-// deno-lint-ignore-file no-explicit-any
-
 import type { ExpandGlobOptions } from "../../../deps.ts";
 import { encodeBase64, expandGlobSync, normalize } from "../../../deps.ts";
+import type { AssetsData } from "../assets/mod.ts";
 import { Asset, AssetKind, EncodingType } from "../assets/mod.ts";
 
+/**
+ * LocalAssetProps represents the properties of the LocalAsset component.
+ */
 export interface LocalAssetProps {
   path: string;
   src: string | URL;
@@ -14,7 +16,10 @@ function getLocalAssetContentBase64(src: string | URL) {
   return encodeBase64(bytes);
 }
 
-export function LocalAsset(props: LocalAssetProps): any {
+/**
+ * LocalAsset is a component that represents a local asset.
+ */
+export function LocalAsset(props: LocalAssetProps): { assets: AssetsData } {
   const content = getLocalAssetContentBase64(props.src);
   return (
     <Asset
@@ -26,6 +31,9 @@ export function LocalAsset(props: LocalAssetProps): any {
   );
 }
 
+/**
+ * LocalGlobProps represents the properties of the LocalGlob component.
+ */
 export interface LocalGlobProps extends ExpandGlobOptions {
   path?: string;
   glob: string | URL;
@@ -39,7 +47,10 @@ function getLocalGlob(props: LocalGlobProps) {
   return [...it];
 }
 
-export function LocalGlob(props: LocalGlobProps): any {
+/**
+ * LocalGlob is a component that represents a local glob of assets.
+ */
+export function LocalGlob(props: LocalGlobProps): { assets: AssetsData }[] {
   const assets = getLocalGlob(props);
   const root = props.root ? normalize(props.root) : "";
   return assets.map((entry) => {

@@ -1,6 +1,9 @@
 import { stringify } from "../../developer_deps.ts";
 import { CheckoutStep, SetupDenoStep } from "./shared.tsx";
 
+/**
+ * PublishWorkflow is a GitHub workflow for the jsonx project.
+ */
 export function PublishWorkflow() {
   return {
     name: "Publish",
@@ -27,6 +30,9 @@ export function PublishWorkflow() {
   };
 }
 
+/**
+ * DenoPublishStep is a step that publishes a package to the Deno registry.
+ */
 export function DenoPublishStep() {
   return {
     name: "Publish package",
