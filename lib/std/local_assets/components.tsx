@@ -1,7 +1,6 @@
-// deno-lint-ignore-file no-explicit-any
-
 import type { ExpandGlobOptions } from "../../../deps.ts";
 import { encodeBase64, expandGlobSync, normalize } from "../../../deps.ts";
+import type { AssetsData } from "../assets/mod.ts";
 import { Asset, AssetKind, EncodingType } from "../assets/mod.ts";
 
 export interface LocalAssetProps {
@@ -14,7 +13,7 @@ function getLocalAssetContentBase64(src: string | URL) {
   return encodeBase64(bytes);
 }
 
-export function LocalAsset(props: LocalAssetProps): any {
+export function LocalAsset(props: LocalAssetProps): { assets: AssetsData } {
   const content = getLocalAssetContentBase64(props.src);
   return (
     <Asset
@@ -39,7 +38,7 @@ function getLocalGlob(props: LocalGlobProps) {
   return [...it];
 }
 
-export function LocalGlob(props: LocalGlobProps): any {
+export function LocalGlob(props: LocalGlobProps): { assets: AssetsData }[] {
   const assets = getLocalGlob(props);
   const root = props.root ? normalize(props.root) : "";
   return assets.map((entry) => {
