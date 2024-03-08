@@ -78,25 +78,25 @@ Resulting `data.json`:
 Optimize developer ergonomics with improved modularity and maintainability by
 enabling developers to compose JSON data like React, using JSX.
 
-### Similar projects
-
 Developers often are required to write code that follows a specific schema or
 format. For example, a configuration file, a data file, or a response payload.
 This is often done using JSON, YAML, or TOML. However, these formats are not
-composable, and are often verbose and difficult to maintain.
+composable out of the box, and are often verbose and difficult to maintain.
+
+### Similar projects
 
 Projects like [jsonnet](https://jsonnet.org/) address the challenge of writing
 complex JSON by providing a way to modularize and compose data in a dedicated
 language, improving overall ergonomics. While libraries exist that embed the
 jsonnet system within other languages, jsonnet itself is a separate tool. jsonx,
 on the other hand, focuses on leveraging familiar languages and tools like
-Javascript and Typescript to achieve similar modularity and composition, with
+JavaScript and TypeScript to achieve similar modularity and composition, with
 the benefit of being naturally embeddable within those environments.
 
 There's already a project, [json-jsx](https://github.com/alexstroukov/json-jsx),
 that offers similar functionality to jsonx. However, json-jsx is designed
 specifically for Babel projects, whereas jsonx targets JavaScript runtimes
-capable of JSX transpilation, like Deno.
+capable of JSX transpilation, such as Deno.
 
 ## Contribute
 
