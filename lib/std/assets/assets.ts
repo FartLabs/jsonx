@@ -1,32 +1,53 @@
+/**
+ * AssetKind represents the kind of asset.
+ */
 export enum AssetKind {
   FILE = "file",
   SYMLINK = "symlink",
 }
 
+/**
+ * EncodingType represents the encoding type of the file.
+ */
 export enum EncodingType {
   UTF8 = "utf-8",
   BASE64 = "base64",
 }
 
+/**
+ * TextFileAssetData represents the data of a text file asset.
+ */
 export interface TextFileAssetData {
   kind: AssetKind.FILE;
   content: string;
   encoding: EncodingType;
 }
 
+/**
+ * GitSha1FileAssetData represents the data of a file asset with a Git SHA1.
+ */
 export interface GitSha1FileAssetData {
   kind: AssetKind.FILE;
   gitSha1: string;
   size: number;
 }
 
+/**
+ * FileAssetData represents the data of a file asset.
+ */
 export type FileAssetData = TextFileAssetData | GitSha1FileAssetData;
 
+/**
+ * SymlinkAssetData represents the data of a symlink asset.
+ */
 export interface SymlinkAssetData {
   kind: AssetKind.SYMLINK;
   target: string;
 }
 
+/**
+ * AssetData represents the data of an asset.
+ */
 export type AssetData = FileAssetData | SymlinkAssetData;
 
 /**
