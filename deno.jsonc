@@ -5,7 +5,8 @@
   "exports": {
     "./jsx-runtime": "./lib/std/runtime/mod.ts",
     "./std/assets": "./lib/std/assets/mod.ts",
-    "./std/local_assets": "./lib/std/local_assets/mod.ts"
+    "./std/local_assets": "./lib/std/local_assets/mod.ts",
+    "./github_workflows": "./lib/github_workflows"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
