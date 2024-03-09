@@ -49,9 +49,13 @@ Deno.test("Composes JSON array data by createObject in a fragment", () => {
   assertEquals(actual, expected);
 });
 
-Deno.test("Composes JSON array data by createObject in children", () => {
-  function Zoo() {
-    return {};
+Deno.test("Composes children predictably", () => {
+  function Zoo(props: { children?: unknown[] }) {
+    return (
+      <>
+        {...(props?.children ?? [])}
+      </>
+    );
   }
 
   const actual = (

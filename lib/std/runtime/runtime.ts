@@ -1,15 +1,14 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { deepMerge } from "../../../deps.ts";
-import { reduceNode } from "./node.ts";
 
 export { createObject as h };
 export { createNode as jsx };
 export { createNode as jsxs };
 export { createNode as jsxDev };
 
-export function Fragment(_: any): any {
-  return [];
+export function Fragment({ children }: any): any {
+  return reduceMerge(children);
 }
 
 /**
@@ -31,10 +30,7 @@ function createNode(
 }
 
 /**
- * createObject is a function that represents the jsonx runtime.
- *
- * @see
- * https://github.com/nanojsx/nano/blob/2590dd9477970b2dc2a1d1ae5fb03b7c87a84174/src/core.ts#L196
+ * createObject is a function that renders a jsonx component.
  */
 export function createObject(
   tagNameOrComponent: any,
@@ -47,49 +43,28 @@ export function createObject(
       ? props.children
       : [props.children];
     children = [...children, ...propsChildren];
-
-    // Reflect the change in props.
-    if (Array.isArray(props.children)) {
-      props.children = [...children];
-    }
-  }
-
-  if (!props.children) {
-    props.children = children;
-  }
-
-  const value = typeof tagNameOrComponent === "function"
-    ? tagNameOrComponent(props)
-    : {};
-
-  // Render component node if tagNameOrComponent is a function.
-  return resolveChildren<any, any>(
-    {},
-    { ...value, children },
-  );
-}
-
-function resolveChildren<TResult, TValue>(
-  initial: TResult,
-  root: TValue,
-) {
-  // If the child is an element, append it to the parent element.
-  if (!Array.isArray((root as any)?.children)) {
-    (root as any).children = [(root as any).children];
   }
 
   // Loose object type to array type conversion.
-  if (typeof (root as any).children === "object") {
-    (root as any).children = Array.prototype.slice.call((root as any).children);
+  if (typeof children === "object") {
+    children = Array.prototype.slice.call(children);
+  }
+
+  // Reflect the change in props.
+  props.children = [...children];
+
+  // Render the component.
+  if (typeof tagNameOrComponent === "function") {
+    return tagNameOrComponent(props);
   }
 
   // Resolve children and use them to reduce the parent element.
-  return reduceNode(initial, root as any, reduceChild);
+  return reduceMerge(props.children);
 }
 
-function reduceChild<TResult, TValue>(result: TResult, value: TValue): TResult {
-  return deepMerge(
-    result as Record<PropertyKey, unknown>,
-    value as Record<PropertyKey, unknown>,
-  ) as TResult;
+function reduceMerge(children: any, initial: any = {}) {
+  return children?.reduce(
+    (result: any, child: any) => deepMerge(result, child),
+    initial,
+  );
 }
