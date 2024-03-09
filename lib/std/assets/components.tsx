@@ -6,13 +6,19 @@ import { AssetKind, EncodingType } from "./assets.ts";
  */
 export interface AssetsProps {
   data?: AssetsData;
+  children?: unknown[];
 }
 
 /**
  * Assets is a component that represents a collection of assets.
  */
 export function Assets(props: AssetsProps): { assets: AssetsData } {
-  return { assets: props.data ?? {} };
+  return (
+    <>
+      {{ assets: props.data ?? {} }}
+      {...(props?.children ?? [])}
+    </>
+  );
 }
 
 /**

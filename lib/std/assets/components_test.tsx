@@ -1,5 +1,5 @@
 import { assertEquals } from "../../../developer_deps.ts";
-import { Asset, Assets } from "./components.ts";
+import { Asset, Assets } from "./components.tsx";
 import { AssetKind, EncodingType } from "./assets.ts";
 
 Deno.test("Asset composes successfully", () => {

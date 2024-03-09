@@ -19,4 +19,4 @@
  */
 
 export * from "./assets.ts";
-export * from "./components.ts";
+export * from "./components.tsx";

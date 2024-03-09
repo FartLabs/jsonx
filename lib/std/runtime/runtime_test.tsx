@@ -49,16 +49,20 @@ Deno.test("Composes JSON array data by createObject in a fragment", () => {
   assertEquals(actual, expected);
 });
 
-Deno.test("Composes JSON array data by createObject in children", () => {
-  function Zoo() {
-    return {};
+Deno.test("Composes children predictably", () => {
+  function Farm(props: { children?: unknown[] }) {
+    return (
+      <>
+        {...(props?.children ?? [])}
+      </>
+    );
   }
 
   const actual = (
-    <Zoo>
+    <Farm>
       <Cat />
       <Dog />
-    </Zoo>
+    </Farm>
   );
   const expected = { animals: ["🐈", "🐕"] };
   assertEquals(actual, expected);
