@@ -1,15 +1,21 @@
 import { deepMerge } from "../../../deps.ts";
 
 /**
- * Element is a plain old JavaScript object.
+ * JSX is the JSX namespace.
  */
-export type Element = Record<PropertyKey, unknown>;
+export declare namespace JSX {
+  /**
+   * Element is a plain old JavaScript object.
+   */
+  // deno-lint-ignore no-explicit-any
+  type Element = any;
 
-/**
- * FC is a functional component.
- */
-export interface FC<TProps, TResult> {
-  (props: TProps): TResult;
+  /**
+   * FC is a functional component.
+   */
+  interface FC<TProps, TResult> {
+    (props: TProps): TResult;
+  }
 }
 
 export { createObject as h };
@@ -20,7 +26,7 @@ export { createNode as jsxDev };
 /**
  * Fragment is represents a JSX fragment.
  */
-export function Fragment<TResult>(props: Element): TResult {
+export function Fragment<TResult>(props: JSX.Element): TResult {
   if (!Array.isArray(props.children)) {
     throw new Error("JSX children must be an array.");
   }
@@ -32,8 +38,8 @@ export function Fragment<TResult>(props: Element): TResult {
  * createNode is a function that represents the JSX runtime.
  */
 function createNode<TProps, TResult>(
-  tagNameOrComponent: FC<TProps, TResult> | string,
-  props: TProps & { children: Element[] },
+  tagNameOrComponent: JSX.FC<TProps, TResult> | string,
+  props: TProps & { children: JSX.Element[] },
   _key: never,
   _source?: never,
   _self?: never,
@@ -53,8 +59,8 @@ function createNode<TProps, TResult>(
  * createObject is a function that renders a jsonx component.
  */
 export function createObject<TProps, TResult>(
-  tagNameOrComponent: FC<TProps, TResult>,
-  props: TProps & { children: Element[] },
+  tagNameOrComponent: JSX.FC<TProps, TResult>,
+  props: TProps & { children: JSX.Element[] },
 ): TResult {
   // Render the component.
   if (typeof tagNameOrComponent === "function") {
@@ -70,9 +76,9 @@ export function createObject<TProps, TResult>(
 }
 
 function reduceMerge(
-  children: Element[],
-  initial: Element = {},
-): Element {
+  children: JSX.Element[],
+  initial: JSX.Element = {},
+): JSX.Element {
   return children.reduce(
     (result, child) => deepMerge(result, child),
     initial,
