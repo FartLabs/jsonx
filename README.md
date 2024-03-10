@@ -1,6 +1,7 @@
 # jsonx
 
-<a href="https://jsr.io/@fartlabs/jsonx"><img src="https://jsr.io/logo.svg" alt="jsr.io logo" width="32"></a>
+[![JSR][JSR badge]][JSR] [![JSR score][JSR score badge]][JSR score]
+[![GitHub Actions][GitHub Actions badge]][GitHub Actions]
 
 JSX runtime and compiler for composing JSON data.
 
@@ -127,3 +128,10 @@ Run `deno test` to run the unit tests.
 ---
 
 Developed with ❤️ [**@FartLabs**](https://github.com/FartLabs)
+
+[JSR]: https://jsr.io/@fartlabs/jsonx
+[JSR badge]: https://jsr.io/badges/@fartlabs/jsonx
+[JSR score]: https://jsr.io/@fartlabs/jsonx/score
+[JSR score badge]: https://jsr.io/badges/@fartlabs/jsonx/score
+[GitHub Actions]: https://github.com/FartLabs/jsonx/actions/workflows/check.yaml
+[GitHub Actions badge]: https://github.com/FartLabs/jsonx/actions/workflows/check.yaml/badge.svg
