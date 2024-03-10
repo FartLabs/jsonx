@@ -104,8 +104,8 @@ capable of JSX transpilation, such as Deno.
 This project leverages Deno's built-in JSX support and robust module system.
 These features streamline development by enabling:
 
-- Modular code: Deno's compliance with JS/TS's native module system (familiar
-  import/export syntax) encourages well-organized code through reusable modules.
+- Modular code: Deno's compliance with JS/TS's native module system encourages
+  well-organized code through reusable modules.
 - JSX support: Out-of-the-box JSX support facilitates scalable data composition
   and modularity, similar to how React components are composed.
 
@@ -121,9 +121,11 @@ Run `deno fmt` to format the code.
 
 Run `deno lint` to lint the code.
 
+Run `deno task generate` to generate code.
+
 ### Testing
 
-Run `deno test` to run the unit tests.
+Run `deno task test` to run the unit tests.
 
 ---
 
