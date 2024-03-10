@@ -83,7 +83,7 @@ format. For example, a configuration file, a data file, or a response payload.
 This is often done using JSON, YAML, or TOML. However, these formats are not
 composable out of the box, and are often verbose and difficult to maintain.
 
-### Similar projects
+## Similar projects
 
 Projects like [jsonnet](https://jsonnet.org/) address the challenge of writing
 complex JSON by providing a way to modularize and compose data in a dedicated
@@ -97,6 +97,20 @@ There's already a project, [json-jsx](https://github.com/alexstroukov/json-jsx),
 that offers similar functionality to jsonx. However, json-jsx is designed
 specifically for Babel projects, whereas jsonx targets JavaScript runtimes
 capable of JSX transpilation, such as Deno.
+
+## Shoulders of giants
+
+This project leverages Deno's built-in JSX support and robust module system.
+These features streamline development by enabling:
+
+- Modular code: Deno's compliance with JS/TS's native module system (familiar
+  import/export syntax) encourages well-organized code through reusable modules.
+- JSX support: Out-of-the-box JSX support facilitates scalable data composition
+  and modularity, similar to how React components are composed.
+
+Consequently, Deno provides a solid toolchain and developer ecosystem that
+enables developers to focus on what makes their projects unique, rather than
+reinventing the wheel.
 
 ## Contribute
 
