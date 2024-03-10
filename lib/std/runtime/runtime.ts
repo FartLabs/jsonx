@@ -1,70 +1,86 @@
-// deno-lint-ignore-file no-explicit-any
-
 import { deepMerge } from "../../../deps.ts";
+
+/**
+ * JSX is the JSX namespace.
+ */
+export declare namespace JSX {
+  /**
+   * Element is a plain old JavaScript object.
+   */
+  // deno-lint-ignore no-explicit-any
+  type Element = any;
+
+  /**
+   * FC is a functional component.
+   */
+  interface FC<TProps, TResult> {
+    (props: TProps): TResult;
+  }
+}
 
 export { createObject as h };
 export { createNode as jsx };
 export { createNode as jsxs };
 export { createNode as jsxDev };
 
-export function Fragment({ children }: any): any {
-  return reduceMerge(children);
+/**
+ * Fragment is represents a JSX fragment.
+ */
+export function Fragment<TResult>(props: JSX.Element): TResult {
+  if (!Array.isArray(props.children)) {
+    throw new Error("JSX children must be an array.");
+  }
+
+  return reduceMerge(props.children) as TResult;
 }
 
 /**
  * createNode is a function that represents the JSX runtime.
  */
-function createNode(
-  type: any,
-  props: any,
-  _key: string,
-  _source?: string,
-  _self?: string,
-): any {
-  let { children = [], ...restProps } = props;
-  if (!Array.isArray(children)) {
-    children = [children];
+function createNode<TProps, TResult>(
+  tagNameOrComponent: JSX.FC<TProps, TResult> | string,
+  props: TProps & { children: JSX.Element[] },
+  _key: never,
+  _source?: never,
+  _self?: never,
+): TResult {
+  if (typeof tagNameOrComponent === "string") {
+    throw new Error("JSX tag names are not supported in jsonx.");
   }
 
-  return createObject(type, restProps, ...children);
+  if (!Array.isArray(props.children)) {
+    props.children = [props.children];
+  }
+
+  return createObject(tagNameOrComponent, props);
 }
 
 /**
  * createObject is a function that renders a jsonx component.
  */
-export function createObject(
-  tagNameOrComponent: any,
-  props: any = {},
-  ...children: any[]
-): any {
-  // If children is passed as props, merge with ...children.
-  if (props?.children) {
-    const propsChildren = Array.isArray(props.children)
-      ? props.children
-      : [props.children];
-    children = [...children, ...propsChildren];
-  }
-
-  // Loose object type to array type conversion.
-  if (typeof children === "object") {
-    children = Array.prototype.slice.call(children);
-  }
-
-  // Reflect the change in props.
-  props.children = [...children];
-
+export function createObject<TProps, TResult>(
+  tagNameOrComponent: JSX.FC<TProps, TResult>,
+  props: TProps & { children: JSX.Element[] },
+): TResult {
   // Render the component.
   if (typeof tagNameOrComponent === "function") {
     return tagNameOrComponent(props);
   }
 
   // Resolve children and use them to reduce the parent element.
-  return reduceMerge(props.children);
+  if (!Array.isArray(props.children)) {
+    throw new Error("JSX children must be an array.");
+  }
+
+  return reduceMerge(props.children) as TResult;
 }
 
-function reduceMerge(children: any, initial: any = {}) {
-  return children?.reduce(
-    (result: any, child: any) => deepMerge(result, child),
+function reduceMerge(
+  children: JSX.Element[],
+  initial: JSX.Element = {},
+): JSX.Element {
+  return children.reduce(
+    (result, child) => deepMerge(result, child),
     initial,
   );
 }
