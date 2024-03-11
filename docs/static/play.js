@@ -71,8 +71,7 @@ async function handlePlay() {
           jsx: "react-jsx",
           jsxFactory: "h",
           jsxFragmentFactory: "Fragment",
-          // TODO: Fix JSX import source.
-          jsxImportSource: "https://jsr.io/@fartlabs/jsonx",
+          jsxImportSource: `https://esm.sh/jsr/@fartlabs/jsonx@${version.value}`,
         },
       },
     });
@@ -80,13 +79,12 @@ async function handlePlay() {
     transformation.warnings.forEach((warning) => {
       appendBuildOutput("Warning", warning.text);
     });
+
+    const html = `<script type="module">${CONSOLE_INTERCEPT}\n${transformation.code}</script>`;
+    result.srcdoc = html;
   } catch (error) {
     appendBuildOutput("Error", error.message);
-    return;
   }
-
-  const html = `Hello world!\n<script type="module">${CONSOLE_INTERCEPT}\nconsole.log("Hello world!");</script>`;
-  result.srcdoc = html;
 }
 
 /**
