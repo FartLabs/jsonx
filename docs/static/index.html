@@ -4,141 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>jsonx</title>
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-          sans-serif;
-      }
-
-      body {
-        background-color: #bbb;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        margin: 0 -5px 0 0;
-      }
-
-      nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1em 1em 0 1em;
-      }
-
-      .badges {
-        display: flex;
-        gap: 0.5em;
-      }
-
-      .badges a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .jsr-link {
-        --yellow: rgb(247 223 30);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        outline: 2px solid var(--yellow);
-        color: var(--yellow);
-        border-radius: 0.5em;
-        transition: outline 0.2s;
-        padding: 0.5em;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      .jsr-link:hover {
-        outline: 5px solid var(--yellow);
-      }
-
-      .badges img {
-        height: 1.5em;
-        align-self: center;
-      }
-
-      main {
-        padding: 0 1em;
-      }
-
-      details {
-        color: #bbb;
-        outline: 2px solid #333;
-        border-radius: 0.5em;
-        margin: 1em 0;
-      }
-
-      details summary {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5em;
-        border-radius: 0.5em;
-        background-color: #333;
-      }
-
-      details[open] summary {
-        border-bottom: 2px solid #333;
-        border-radius: 0.5em 0.5em 0 0;
-      }
-
-      details:not([open]) summary span:first-child::before {
-        content: "▶";
-        margin-right: 0.5em;
-      }
-
-      details[open] summary span:first-child::before {
-        content: "▼";
-        margin-right: 0.5em;
-      }
-
-      #editor,
-      iframe {
-        width: 100%;
-        height: 34vh;
-        background-color: #fff;
-        padding: 0.5em;
-        resize: vertical;
-        margin-bottom: -5px;
-        border-radius: 0 0 0.5em 0.5em;
-      }
-
-      #buildOutput,
-      #consoleOutput {
-        margin: 0;
-        padding: 0.5em;
-        list-style: none;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        background-color: #000;
-        font-family: monospace;
-      }
-
-      #buildOutput:empty::before,
-      #consoleOutput:empty::before {
-        content: "No output";
-        color: #bbb;
-        display: block;
-        padding: 0.5em;
-      }
-    </style>
+    <link rel="stylesheet" href="./play.css" />
   </head>
   <body>
     <nav>
       <a href="/"><h1>jsonx</h1></a>
 
       <span class="badges">
-        <a class="jsr-link" href="https://jsr.io/badges/@fartlabs/jsonx/score"
-          >API Docs&nbsp;&nbsp;<img
+        <a href="https://jsr.io/@fartlabs/jsonx/score"
+          ><span>API Docs&nbsp;</span
+          ><img
             class="jsr-badge"
             src="https://jsr.io/badges/@fartlabs/jsonx/score"
             alt="JSR badge" /></a
         ><a href="https://github.com/FartLabs/jsonx"
+          ><span>GitHub&nbsp;</span
           ><img
             class="github-badge"
             src="https://simpleicons.org/icons/github.svg"
