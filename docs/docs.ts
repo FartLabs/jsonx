@@ -1,4 +1,5 @@
-import { semverCompare, semverParse, serveDir } from "../deno_deps.ts";
+import { compare, parse } from "@std/semver";
+import { serveDir } from "@std/http";
 
 /**
  * Playground is a jsonx playground.
@@ -79,7 +80,7 @@ export class Docs {
       .then((meta) => ({
         latest: meta.latest,
         versions: Object.keys(meta.versions)
-          .sort((a, b) => semverCompare(semverParse(b), semverParse(a))),
+          .sort((a, b) => compare(parse(b), parse(a))),
       }));
   }
 }
