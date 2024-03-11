@@ -1,4 +1,4 @@
-import { compare, parse } from "@std/semver";
+import { compare, greaterThan, parse } from "@std/semver";
 import { serveDir } from "@std/http";
 
 /**
@@ -77,11 +77,7 @@ export class Docs {
   private get meta(): Promise<Meta> {
     return fetch("https://jsr.io/@fartlabs/jsonx/meta.json")
       .then((response) => response.json())
-      .then((meta) => ({
-        latest: meta.latest,
-        versions: Object.keys(meta.versions)
-          .sort((a, b) => compare(parse(b), parse(a))),
-      }));
+      .then((meta) => playgroundMeta(meta));
   }
 }
 
@@ -93,6 +89,20 @@ export function createDocs({ fsRoot, kv }: {
   kv: Deno.Kv;
 }): Docs {
   return new Docs(fsRoot, kv);
+}
+
+function playgroundMeta({ latest, versions }: {
+  latest: string;
+  versions: Record<string, unknown>;
+}): Meta {
+  // https://github.com/FartLabs/jsonx/issues/13
+  const minCompatible = parse("0.0.8");
+  return {
+    latest: latest,
+    versions: Object.keys(versions)
+      .filter((versionTag) => greaterThan(parse(versionTag), minCompatible))
+      .sort((a, b) => compare(parse(b), parse(a))),
+  };
 }
 
 function playgroundKey(id: string): Deno.KvKey {
