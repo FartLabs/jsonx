@@ -1,4 +1,4 @@
-import { assertEquals } from "../../../developer_deps.ts";
+import { assertEquals } from "../../../deno_deps.ts";
 import { AssetKind, EncodingType } from "../assets/assets.ts";
 import { LocalAsset } from "./components.tsx";
 

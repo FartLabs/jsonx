@@ -1,4 +1,4 @@
-import { parseArgs } from "../developer_deps.ts";
+import { parseArgs } from "../deno_deps.ts";
 import { createDocs } from "./docs.ts";
 
 if (import.meta.main) {

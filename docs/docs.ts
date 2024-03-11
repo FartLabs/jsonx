@@ -1,4 +1,4 @@
-import { compareSemVer, parseSemVer, serveDir } from "../developer_deps.ts";
+import { semverCompare, semverParse, serveDir } from "../deno_deps.ts";
 
 /**
  * Playground is a jsonx playground.
@@ -76,13 +76,11 @@ export class Docs {
   private get meta(): Promise<Meta> {
     return fetch("https://jsr.io/@fartlabs/jsonx/meta.json")
       .then((response) => response.json())
-      .then((meta) => {
-        return {
-          latest: meta.latest,
-          versions: Object.keys(meta.versions)
-            .sort((a, b) => compareSemVer(parseSemVer(b), parseSemVer(a))),
-        };
-      });
+      .then((meta) => ({
+        latest: meta.latest,
+        versions: Object.keys(meta.versions)
+          .sort((a, b) => semverCompare(semverParse(b), semverParse(a))),
+      }));
   }
 }
 

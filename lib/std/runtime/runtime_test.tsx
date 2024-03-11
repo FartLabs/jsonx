@@ -1,4 +1,4 @@
-import { assertEquals } from "../../../developer_deps.ts";
+import { assertEquals } from "../../../deno_deps.ts";
 
 Deno.test("Composes JSON data by deep merge", () => {
   const actual = (

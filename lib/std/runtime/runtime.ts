@@ -1,4 +1,4 @@
-import { deepMerge } from "../../../deps.ts";
+import { deepMerge } from "../../../browser_deps.ts";
 
 /**
  * JSX is the JSX namespace.

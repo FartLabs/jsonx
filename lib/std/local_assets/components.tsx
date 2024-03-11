@@ -1,5 +1,5 @@
-import type { ExpandGlobOptions } from "../../../deps.ts";
-import { encodeBase64, expandGlobSync, normalize } from "../../../deps.ts";
+import type { ExpandGlobOptions } from "../../../deno_deps.ts";
+import { encodeBase64, expandGlobSync, normalize } from "../../../deno_deps.ts";
 import type { AssetsData } from "../assets/mod.ts";
 import { Asset, AssetKind, EncodingType } from "../assets/mod.ts";
 
