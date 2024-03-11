@@ -57,7 +57,12 @@ async function main() {
   );
   addEventListener("message", (event) => {
     if (event.data.type === "console") {
-      appendConsoleOutput(event.data.method, event.data.arguments.join(" "));
+      appendConsoleOutput(
+        event.data.method,
+        event.data.arguments
+          .map((arg) => (typeof arg === "object" ? JSON.stringify(arg) : arg))
+          .join(" ")
+      );
     }
   });
 }
@@ -77,38 +82,14 @@ async function handlePlay() {
     });
 
     transformation.warnings.forEach((warning) => {
-      appendBuildOutput("Warning", warning.text);
+      appendBuildOutput("warning", warning.text);
     });
 
     const html = `<script type="module">${CONSOLE_INTERCEPT}\n${transformation.code}</script>`;
     result.srcdoc = html;
   } catch (error) {
-    appendBuildOutput("Error", error.message);
+    appendBuildOutput("error", error.message);
   }
-}
-
-/**
- * appendBuildOutput appends a message to the build output.
- * @param {string} type
- * @param {string} message
- * @returns {void}
- */
-function appendBuildOutput(type, message) {
-  const li = document.createElement("li");
-  li.textContent = `${type}: ${message}`;
-  buildOutput.append(li);
-}
-
-/**
- * appendConsoleOutput appends a message to the console output.
- * @param {string} type
- * @param {string} message
- * @returns {void}
- */
-function appendConsoleOutput(type, message) {
-  const li = document.createElement("li");
-  li.textContent = `${type}: ${message}`;
-  consoleOutput.append(li);
 }
 
 const CONSOLE_INTERCEPT = `const _console = { ...console };
@@ -120,3 +101,30 @@ for (const key in _console) {
     };
   }
 }`;
+
+const COLOR = {
+  log: "dodgerblue",
+  warn: "yellow",
+  error: "red",
+  info: "lime",
+  table: "lavender",
+};
+
+function renderPrefix(type) {
+  const timestamp = new Date().toISOString();
+  return `${timestamp} <strong style="color: ${
+    COLOR[type.toLowerCase()]
+  }">[${type.toUpperCase()}]</strong> `;
+}
+
+function appendBuildOutput(type, message) {
+  const li = document.createElement("li");
+  li.innerHTML = `${renderPrefix(type)}${message}`;
+  buildOutput.append(li);
+}
+
+function appendConsoleOutput(type, message) {
+  const li = document.createElement("li");
+  li.innerHTML = `${renderPrefix(type)}${message}`;
+  consoleOutput.append(li);
+}
