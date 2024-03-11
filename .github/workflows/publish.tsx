@@ -1,4 +1,4 @@
-import { stringify } from "../../developer_deps.ts";
+import { stringify } from "../../deno_deps.ts";
 import { CheckoutStep, SetupDenoStep } from "./shared.tsx";
 
 /**

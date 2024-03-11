@@ -1,7 +1,9 @@
-import type { ExpandGlobOptions } from "../../../deps.ts";
-import { encodeBase64, expandGlobSync, normalize } from "../../../deps.ts";
-import type { AssetsData } from "../assets/mod.ts";
-import { Asset, AssetKind, EncodingType } from "../assets/mod.ts";
+import type { ExpandGlobOptions } from "@std/fs";
+import { expandGlobSync } from "@std/fs";
+import { encodeBase64 } from "@std/encoding/base64";
+import { normalize } from "@std/path";
+import type { AssetsData } from "jsonx/std/assets/mod.ts";
+import { Asset, AssetKind, EncodingType } from "jsonx/std/assets/mod.ts";
 
 /**
  * LocalAssetProps represents the properties of the LocalAsset component.
