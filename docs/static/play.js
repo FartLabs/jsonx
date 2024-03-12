@@ -27,6 +27,6 @@ async function main() {
       );
     }
   } finally {
-    await createPlayground({ code, version });
+    await createPlayground({ code, version, autoplay: true });
   }
 }

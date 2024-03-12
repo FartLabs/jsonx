@@ -58,6 +58,11 @@ export async function createPlayground(options) {
   play.disabled = false;
   share.disabled = false;
   version.disabled = false;
+
+  // Play the code if autoplay is enabled.
+  if (options.autoplay) {
+    handlePlay();
+  }
 }
 
 async function handlePlay() {
