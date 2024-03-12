@@ -1,15 +1,11 @@
-import * as esbuild from "https://esm.sh/esbuild-wasm@0.20.1";
+import { transform } from "./build.js";
+import { createEditor } from "./editor.js";
 import { appendBuildOutput, appendConsoleOutput } from "./output.js";
 
 /**
  * createPlayground create a playground.
  */
 export async function createPlayground(options) {
-  // Set up the code editor.
-  await esbuild.initialize({
-    wasmURL: "https://esm.sh/esbuild-wasm@0.20.1/esbuild.wasm",
-  });
-
   // Fetch the module meta.
   await fetch("./meta")
     .then((response) => response.json())
@@ -25,13 +21,14 @@ export async function createPlayground(options) {
     });
 
   // Set up default values.
-  if (options.code) {
-    editor.value = options.code;
-  }
-
   if (options.version) {
     version.value = options.version;
   }
+
+  await createEditor({
+    code: options.code,
+    version: version.value,
+  });
 
   // Set up event listeners.
   play.addEventListener("click", handlePlay);
@@ -67,18 +64,10 @@ export async function createPlayground(options) {
 
 async function handlePlay() {
   try {
-    const transformation = await esbuild.transform(editor.value, {
-      loader: "tsx",
-      tsconfigRaw: {
-        compilerOptions: {
-          jsx: "react-jsx",
-          jsxFactory: "h",
-          jsxFragmentFactory: "Fragment",
-          jsxImportSource: `https://esm.sh/jsr/@fartlabs/jsonx@${version.value}`,
-        },
-      },
+    const transformation = await transform({
+      code: editor.state.doc.toString(),
+      version: version.value,
     });
-
     transformation.warnings.forEach((warning) => {
       appendBuildOutput("warning", warning.text);
     });

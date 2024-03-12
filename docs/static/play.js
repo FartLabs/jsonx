@@ -8,6 +8,11 @@ async function main() {
   const url = new URL(location.href);
   const id = url.searchParams.get("id");
 
+  // Initialize esbuild.
+  await esbuild.initialize({
+    wasmURL: "https://esm.sh/esbuild-wasm@0.20.1/esbuild.wasm",
+  });
+
   // Fetch the playground.
   let code;
   let version;
