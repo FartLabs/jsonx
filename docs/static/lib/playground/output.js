@@ -17,10 +17,16 @@ export function appendBuildOutput(type, message) {
   const li = document.createElement("li");
   li.innerHTML = `${renderPrefix(type)}${message}`;
   buildOutput.append(li);
+  if (!buildDetails.open) {
+    buildDetails.open = true;
+  }
 }
 
 export function appendConsoleOutput(type, message) {
   const li = document.createElement("li");
   li.innerHTML = `${renderPrefix(type)}${message}`;
   consoleOutput.append(li);
+  if (!consoleDetails.open) {
+    consoleDetails.open = true;
+  }
 }

@@ -27,7 +27,7 @@
     </nav>
 
     <main>
-      <details open>
+      <details id="codeDetails" open>
         <summary>
           <span>Code</span>
           <span>
@@ -40,21 +40,22 @@
         <textarea id="editor"></textarea>
       </details>
 
-      <details open>
+      <details id="consoleDetails" open>
+        <summary>
+          <span>Console output</span>
+          <button id="clearConsoleOutput">Clear</button>
+        </summary>
+        <ul id="consoleOutput"></ul>
+      </details>
+
+      <details id="buildDetails">
         <summary>
           <span>Build output</span> <button id="clearBuildOutput">Clear</button>
         </summary>
         <ul id="buildOutput"></ul>
       </details>
 
-      <details open>
-        <summary>
-          <span>Console</span> <button id="clearConsoleOutput">Clear</button>
-        </summary>
-        <ul id="consoleOutput"></ul>
-      </details>
-
-      <details open>
+      <details id="resultDetails">
         <summary>
           <span>Result</span>
           <span>
