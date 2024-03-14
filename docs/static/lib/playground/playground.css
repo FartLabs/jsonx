@@ -10,7 +10,7 @@ body {
   background-color: #bbb;
   overflow-y: scroll;
   overflow-x: hidden;
-  margin: 0 -5px 0 0;
+  /* margin: 0 -5px 0 0; */
 }
 
 nav {
@@ -61,9 +61,9 @@ nav {
   align-self: center;
 }
 
-main {
+/* main {
   padding: 0 0.7em;
-}
+} */
 
 details {
   color: #bbb;

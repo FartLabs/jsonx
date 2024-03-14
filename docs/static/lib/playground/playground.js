@@ -27,7 +27,7 @@ export async function createPlayground(options) {
 
   await createEditor({
     code: options.code,
-    target: "editor",
+    target: editor,
   });
 
   // Set up event listeners.
