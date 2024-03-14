@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>jsonx</title>
-    <link rel="stylesheet" href="./play.css" />
+    <link rel="stylesheet" href="./lib/playground/playground.css" />
   </head>
   <body>
     <nav>
@@ -26,10 +26,11 @@
       ></span>
     </nav>
 
+    <!-- TODO: Consider abstracting the following into a component. -->
     <main>
-      <details open>
+      <details id="codeDetails" open>
         <summary>
-          <span>Code</span>
+          <span>TSX</span>
           <span>
             <select id="version" disabled></select>
             <button id="play" disabled>Play</button>
@@ -37,24 +38,28 @@
           </span>
         </summary>
 
-        <textarea id="editor"></textarea>
+        <div id="editor"></div>
       </details>
 
-      <details open>
+      <details id="consoleDetails" open>
         <summary>
-          <span>Build output</span> <button id="clearBuildOutput">Clear</button>
-        </summary>
-        <ul id="buildOutput"></ul>
-      </details>
-
-      <details open>
-        <summary>
-          <span>Console</span> <button id="clearConsoleOutput">Clear</button>
+          <span>Console</span>
+          <button id="clearConsoleOutput">Clear</button>
         </summary>
         <ul id="consoleOutput"></ul>
       </details>
 
-      <details open>
+      <!-- TODO: Consider sending build logs to console element. -->
+      <details id="buildDetails">
+        <summary>
+          <span>Build logs</span>
+          <button id="clearBuildOutput">Clear</button>
+        </summary>
+        <ul id="buildOutput"></ul>
+      </details>
+
+      <!-- TODO: Consider hiding iframe entirely. -->
+      <details id="resultDetails">
         <summary>
           <span>Result</span>
           <span>

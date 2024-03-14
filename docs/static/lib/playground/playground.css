@@ -107,6 +107,11 @@ iframe {
   border-radius: 0 0 0.5em 0.5em;
 }
 
+#editor {
+  height: initial;
+  color: black;
+}
+
 #buildOutput,
 #consoleOutput {
   margin: 0;
