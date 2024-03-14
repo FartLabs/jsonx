@@ -1,26 +1,8 @@
-import {
-  EditorView,
-  keymap,
-  lineNumbers,
-} from "https://cdn.skypack.dev/@codemirror/view";
-import {
-  defaultKeymap,
-  history,
-} from "https://cdn.skypack.dev/@codemirror/commands";
-import { syntaxHighlighting } from "https://cdn.skypack.dev/@codemirror/language";
+import ace from "https://esm.sh/ace-builds@1.32.7";
 
 let EDITOR;
 
 export function createEditor(options) {
-  EDITOR = new EditorView({
-    doc: options.code,
-    parent: document.querySelector("#editor"),
-    extensions: [
-      keymap.of(defaultKeymap),
-      lineNumbers(),
-      // history(),
-      // syntaxHighlighting(),
-    ],
-  });
+  EDITOR = ace.edit(options.target);
   console.log({ EDITOR });
 }

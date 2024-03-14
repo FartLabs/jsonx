@@ -27,7 +27,7 @@ export async function createPlayground(options) {
 
   await createEditor({
     code: options.code,
-    version: version.value,
+    target: "editor",
   });
 
   // Set up event listeners.
@@ -65,7 +65,7 @@ export async function createPlayground(options) {
 async function handlePlay() {
   try {
     const transformation = await transform({
-      code: editor.state.doc.toString(),
+      code: editor.innerText,
       version: version.value,
     });
     transformation.warnings.forEach((warning) => {
