@@ -2,25 +2,15 @@ import {
   EditorView,
   keymap,
   lineNumbers,
-} from "https://cdn.skypack.dev/@codemirror/view";
-import {
-  defaultKeymap,
-  history,
-} from "https://cdn.skypack.dev/@codemirror/commands";
-import { syntaxHighlighting } from "https://cdn.skypack.dev/@codemirror/language";
+} from "https://esm.sh/@codemirror/view@6.0.1";
+import { defaultKeymap } from "https://esm.sh/@codemirror/commands@6.0.1";
 
-let EDITOR;
+export let cmEditor;
 
 export function createEditor(options) {
-  EDITOR = new EditorView({
+  cmEditor = new EditorView({
     doc: options.code,
-    parent: document.querySelector("#editor"),
-    extensions: [
-      keymap.of(defaultKeymap),
-      lineNumbers(),
-      // history(),
-      // syntaxHighlighting(),
-    ],
+    parent: options.target,
+    extensions: [keymap.of(defaultKeymap), lineNumbers()],
   });
-  console.log({ EDITOR });
 }

@@ -1,5 +1,5 @@
 import { transform } from "./build.js";
-import { createEditor } from "./editor.js";
+import { createEditor, cmEditor } from "./editor.js";
 import { appendBuildOutput, appendConsoleOutput } from "./output.js";
 
 /**
@@ -26,12 +26,13 @@ export async function createPlayground(options) {
   }
 
   await createEditor({
+    target: editor,
     code: options.code,
     version: version.value,
   });
 
   // Set up event listeners.
-  play.addEventListener("click", handlePlay);
+  play.addEventListener("click", () => handlePlay());
   clearBuildOutput.addEventListener(
     "click",
     () => (buildOutput.innerHTML = "")
@@ -64,8 +65,14 @@ export async function createPlayground(options) {
 
 async function handlePlay() {
   try {
+    const code = cmEditor?.state?.doc?.toString();
+    if (!code) {
+      appendBuildOutput("error", "No code to build.");
+      return;
+    }
+
     const transformation = await transform({
-      code: editor.state.doc.toString(),
+      code: cmEditor.state.doc.toString(),
       version: version.value,
     });
     transformation.warnings.forEach((warning) => {

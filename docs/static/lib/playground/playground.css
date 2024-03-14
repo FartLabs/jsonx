@@ -108,7 +108,8 @@ iframe {
 }
 
 #editor {
-  height: unset;
+  height: initial;
+  color: black;
 }
 
 #buildOutput,

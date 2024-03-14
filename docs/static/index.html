@@ -26,10 +26,11 @@
       ></span>
     </nav>
 
+    <!-- TODO: Consider abstracting the following into a component. -->
     <main>
       <details id="codeDetails" open>
         <summary>
-          <span>Code</span>
+          <span>TSX</span>
           <span>
             <select id="version" disabled></select>
             <button id="play" disabled>Play</button>
@@ -42,19 +43,22 @@
 
       <details id="consoleDetails" open>
         <summary>
-          <span>Console output</span>
+          <span>Console</span>
           <button id="clearConsoleOutput">Clear</button>
         </summary>
         <ul id="consoleOutput"></ul>
       </details>
 
+      <!-- TODO: Consider sending build logs to console element. -->
       <details id="buildDetails">
         <summary>
-          <span>Build output</span> <button id="clearBuildOutput">Clear</button>
+          <span>Build logs</span>
+          <button id="clearBuildOutput">Clear</button>
         </summary>
         <ul id="buildOutput"></ul>
       </details>
 
+      <!-- TODO: Consider hiding iframe entirely. -->
       <details id="resultDetails">
         <summary>
           <span>Result</span>
