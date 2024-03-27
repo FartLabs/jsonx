@@ -1,13 +1,11 @@
 # jsonx
 
-[![JSR][JSR badge]][JSR] [![JSR score][JSR score badge]][JSR score]
-[![GitHub Actions][GitHub Actions badge]][GitHub Actions]
+[![JSR score](https://jsr.io/badges/@fartlabs/jsonx/score)](https://jsr.io/@fartlabs/jsonx)
+[![GitHub Actions](https://github.com/FartLabs/jsonx/actions/workflows/check.yaml/badge.svg)](https://github.com/FartLabs/jsonx/actions/workflows/check.yaml)
 
 JSX runtime and compiler for composing JSON data.
 
-## Usage
-
-### Deno
+## Use Deno
 
 1\. [Install Deno](https://docs.deno.com/runtime/manual).
 
@@ -51,6 +49,7 @@ const data = (
     <Dog />
   </>
 );
+
 Deno.writeTextFileSync(
   "data.json",
   JSON.stringify(data, null, 2),
@@ -127,13 +126,13 @@ Run `deno task generate` to generate code.
 
 Run `deno task test` to run the unit tests.
 
+### Documentation
+
+The official jsonx documentation site <https://jsonx.deno.dev/> is maintained in
+a separate GitHub repository,
+[FartLabs/jsonx_docs](https://github.com/FartLabs/jsonx_docs). Feel free to
+contribute to the documentation.
+
 ---
 
 Developed with ❤️ [**@FartLabs**](https://github.com/FartLabs)
-
-[JSR]: https://jsr.io/@fartlabs/jsonx
-[JSR badge]: https://jsr.io/badges/@fartlabs/jsonx
-[JSR score]: https://jsr.io/@fartlabs/jsonx/score
-[JSR score badge]: https://jsr.io/badges/@fartlabs/jsonx/score
-[GitHub Actions]: https://github.com/FartLabs/jsonx/actions/workflows/check.yaml
-[GitHub Actions badge]: https://github.com/FartLabs/jsonx/actions/workflows/check.yaml/badge.svg
