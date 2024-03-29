@@ -9,12 +9,18 @@ async function AsyncDog() {
 }
 
 Deno.test("Asynchronously composes JSON array data by createObject in a fragment", async () => {
-  const actual = await (
-    <>
-      <AsyncCat />
-      <AsyncDog />
-    </>
-  );
+  async function Farm() {
+    const cat = await <AsyncCat />;
+    const dog = await <AsyncDog />;
+    return (
+      <>
+        {cat}
+        {dog}
+      </>
+    );
+  }
+
+  const actual = await <Farm />;
   const expected = { animals: ["🐈", "🐕"] };
   assertEquals(actual, expected);
 });
