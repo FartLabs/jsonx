@@ -16,6 +16,12 @@ async function AsyncFarm(props: { children?: unknown[] }) {
   );
 }
 
+Deno.test("Asynchronously composes JSON array data by createObject", async () => {
+  const actual = await <AsyncCat />;
+  const expected = { animals: ["🐈"] };
+  assertEquals(actual, expected);
+});
+
 Deno.test("Asynchronously composes JSON array data by createObject in a fragment", async () => {
   const actual = await (
     <AsyncFarm>
