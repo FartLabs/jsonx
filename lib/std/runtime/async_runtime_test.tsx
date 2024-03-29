@@ -8,17 +8,21 @@ async function AsyncDog() {
   return await Promise.resolve({ animals: ["🐕"] });
 }
 
-async function AsyncFarm() {
+async function AsyncFarm(props: { children?: unknown[] }) {
   return (
     <>
-      {await <AsyncCat />}
-      {await <AsyncDog />}
+      {...(await Promise.all(props?.children ?? []))}
     </>
   );
 }
 
 Deno.test("Asynchronously composes JSON array data by createObject in a fragment", async () => {
-  const actual = await <AsyncFarm />;
+  const actual = await (
+    <AsyncFarm>
+      <AsyncCat />
+      <AsyncDog />
+    </AsyncFarm>
+  );
   const expected = { animals: ["🐈", "🐕"] };
   assertEquals(actual, expected);
 });
