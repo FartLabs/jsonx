@@ -2,6 +2,7 @@ import type { ExpandGlobOptions } from "@std/fs";
 import { expandGlobSync } from "@std/fs";
 import { encodeBase64 } from "@std/encoding/base64";
 import { normalize } from "@std/path";
+import { readFileSync } from "node:fs";
 import type { AssetsData } from "jsonx/std/assets/mod.ts";
 import { Asset, AssetKind, EncodingType } from "jsonx/std/assets/mod.ts";
 
@@ -14,8 +15,7 @@ export interface LocalAssetProps {
 }
 
 function getLocalAssetContentBase64(src: string | URL) {
-  const bytes = Deno.readFileSync(src);
-  return encodeBase64(bytes);
+  return encodeBase64(readFileSync(src));
 }
 
 /**
