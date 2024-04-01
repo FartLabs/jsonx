@@ -5,7 +5,7 @@
 
 JSX runtime and compiler for composing JSON data.
 
-## Use Deno
+## Getting started
 
 1\. [Install Deno](https://docs.deno.com/runtime/manual).
 
@@ -27,7 +27,7 @@ deno add @fartlabs/jsonx
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxFactory": "@fartlabs/jsonx"
+    "jsxImportSource": "@fartlabs/jsonx"
   }
 }
 ```
@@ -113,6 +113,8 @@ enables developers to focus on what makes their projects unique, rather than
 reinventing the wheel.
 
 ## Contribute
+
+We appreciate your help!
 
 ### Style
 
