@@ -22,8 +22,6 @@
   },
   "tasks": {
     "test": "deno test -A",
-    "generate": "deno run -Ar https://deno.land/x/generate/cli/main.ts gen.ts",
-    "docs": "deno run -A --unstable-kv docs/main.ts"
-  },
-  "exclude": ["./docs/static"]
+    "generate": "deno run -Ar https://deno.land/x/generate/cli/main.ts gen.ts"
+  }
 }
