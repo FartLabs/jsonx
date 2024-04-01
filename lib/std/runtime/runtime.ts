@@ -1,4 +1,4 @@
-import { deepMerge } from "@std/collections/deep_merge";
+import { deepMerge } from "@cross/deepmerge";
 
 /**
  * JSX is the JSX namespace.
