@@ -75,9 +75,5 @@ export function makeAssetData(props: AssetProps): AssetData {
  * Asset is a component that represents an asset.
  */
 export function Asset(props: AssetProps): { assets: AssetsData } {
-  return {
-    assets: {
-      [props.path]: makeAssetData(props),
-    },
-  };
+  return { assets: { [props.path]: makeAssetData(props) } };
 }
