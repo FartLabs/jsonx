@@ -4,6 +4,7 @@
   "version": "0.0.10",
   "exports": {
     "./jsx-runtime": "./lib/std/runtime/mod.ts",
+    "./std/arithmetic": "./lib/std/arithmetic/mod.ts",
     "./std/assets": "./lib/std/assets/mod.ts",
     "./std/assets/local": "./lib/std/assets/local/mod.ts"
   },
@@ -17,6 +18,7 @@
     "@std/encoding": "jsr:@std/encoding@^0.220.1",
     "@std/fs": "jsr:@std/fs@^0.220.1",
     "@std/path": "jsr:@std/path@^0.220.1",
+    "@std/yaml": "jsr:@std/yaml@^0.221.0",
     "jsonx-jsx/jsx-runtime": "./lib/std/runtime/mod.ts",
     "jsonx/": "./lib/"
   },
