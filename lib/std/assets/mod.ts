@@ -9,9 +9,9 @@
  *
  * ```tsx
  * const data = (
- *   <LocalAsset
- *      path="src/lib/components/hello.svelte"
- *      src={new URL(import.meta.resolve("./testdata/hello.svelte"))}
+ *   <Asset
+ *     path="example.ts"
+ *     content={'console.log("Example");\n'}
  *   />
  * );
  * console.log(data);
