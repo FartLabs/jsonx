@@ -3,7 +3,7 @@
  *
  * This module contains jsonx components for virtual assets.
  *
- * `AssetData` was inspired by the assets object in a Deno Deploy
+ * `AssetData` is inspired by the assets object in a Deno Deploy
  * deployment
  * ([API docs](https://apidocs.deno.com/#post-/projects/-projectId-/deployments)).
  *
