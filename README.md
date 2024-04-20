@@ -130,8 +130,8 @@ Run `deno task test` to run the unit tests.
 
 ### Documentation
 
-The official jsonx documentation site <https://jsonx.deno.dev/> is maintained in
-a separate GitHub repository,
+The official jsonx documentation site <https://jsonx.fart.tools/> is maintained
+in a separate GitHub repository,
 [FartLabs/jsonx_docs](https://github.com/FartLabs/jsonx_docs). Feel free to
 contribute to the documentation.
 
