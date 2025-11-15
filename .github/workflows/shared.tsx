@@ -3,7 +3,7 @@
  */
 export function CheckoutStep() {
   return {
-    uses: "actions/checkout@v4",
+    uses: "actions/checkout@v5",
   };
 }
 
@@ -12,6 +12,6 @@ export function CheckoutStep() {
  */
 export function SetupDenoStep() {
   return {
-    uses: "denoland/setup-deno@v1",
+    uses: "denoland/setup-deno@v2",
   };
 }
