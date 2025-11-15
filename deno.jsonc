@@ -23,6 +23,14 @@
   },
   "tasks": {
     "test": "deno test -A",
-    "generate": "deno run -Ar https://deno.land/x/generate/cli/main.ts gen.ts"
+    "generate": {
+      "description": "Generate code",
+      "dependencies": [
+        "generate:workflow:check",
+        "generate:workflow:publish"
+      ]
+    },
+    "generate:workflow:check": "deno --allow-write .github/workflows/check.tsx .github/workflows/check.yaml",
+    "generate:workflow:publish": "deno --allow-write .github/workflows/publish.tsx .github/workflows/publish.yaml"
   }
 }
