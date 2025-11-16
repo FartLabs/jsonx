@@ -1,3 +1,4 @@
+// deno-lint-ignore-file jsx-key
 import { stringify } from "@std/yaml";
 import { CheckoutStep, SetupDenoStep } from "./shared.tsx";
 

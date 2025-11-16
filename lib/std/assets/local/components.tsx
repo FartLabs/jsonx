@@ -61,6 +61,8 @@ export function LocalGlob(props: LocalGlobProps): { assets: AssetsData }[] {
       (root && entryURL.startsWith(root)
         ? entryURL.slice(root.length)
         : entryURL);
+
+    // deno-lint-ignore jsx-key
     return <LocalAsset path={path} src={entry.path} />;
   });
 }
