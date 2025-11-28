@@ -6,7 +6,7 @@ Deno.test("Asset composes successfully", () => {
   const actual = (
     <Asset
       path="example.ts"
-      content='console.log("Example");\n'
+      content={`console.log("Example");\n`}
     />
   );
   const expected = {
@@ -14,7 +14,7 @@ Deno.test("Asset composes successfully", () => {
       "example.ts": {
         kind: AssetKind.FILE,
         encoding: EncodingType.UTF8,
-        content: 'console.log("Example");\n',
+        content: `console.log("Example");\n`,
       },
     },
   };
@@ -26,19 +26,19 @@ Deno.test("Assets compose children successfully", () => {
     <Assets>
       <Asset
         path="example1.ts"
-        content='console.log("Example1");\n'
+        content={`console.log("Example1");\n`}
       />
       <Asset
         path="example2.ts"
-        content='console.log("Example2");\n'
+        content={`console.log("Example2");\n`}
       />
       <Asset
         path="example3.ts"
-        content='console.log("Example3");\n'
+        content={`console.log("Example3");\n`}
       />
       <Asset
         path="example4.ts"
-        content='console.log("Example4");\n'
+        content={`console.log("Example4");\n`}
       />
     </Assets>
   );
@@ -47,22 +47,22 @@ Deno.test("Assets compose children successfully", () => {
       "example1.ts": {
         kind: AssetKind.FILE,
         encoding: EncodingType.UTF8,
-        content: 'console.log("Example1");\n',
+        content: `console.log("Example1");\n`,
       },
       "example2.ts": {
         kind: AssetKind.FILE,
         encoding: EncodingType.UTF8,
-        content: 'console.log("Example2");\n',
+        content: `console.log("Example2");\n`,
       },
       "example3.ts": {
         kind: AssetKind.FILE,
         encoding: EncodingType.UTF8,
-        content: 'console.log("Example3");\n',
+        content: `console.log("Example3");\n`,
       },
       "example4.ts": {
         kind: AssetKind.FILE,
         encoding: EncodingType.UTF8,
-        content: 'console.log("Example4");\n',
+        content: `console.log("Example4");\n`,
       },
     },
   };

@@ -23,6 +23,18 @@
   },
   "tasks": {
     "test": "deno test -A",
+    "format": "deno fmt",
+    "lint": "deno lint",
+    "check": "deno check",
+    "precommit": {
+      "description": "Run checks and tests before committing",
+      "dependencies": [
+        "format",
+        "lint",
+        "check",
+        "test"
+      ]
+    },
     "generate": {
       "description": "Generate code",
       "dependencies": [
