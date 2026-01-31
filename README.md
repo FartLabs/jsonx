@@ -75,6 +75,8 @@ Resulting `data.json`:
 
 ## Motivation
 
+<img width="1154" height="535" alt="Image" src="https://github.com/user-attachments/assets/35da78fa-d564-4efb-a813-6815c8259c86" />
+
 Optimize developer ergonomics with improved modularity and maintainability by
 enabling developers to compose JSON data like React, using JSX.
 
