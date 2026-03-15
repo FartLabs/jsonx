@@ -3,7 +3,7 @@
 [![JSR score](https://jsr.io/badges/@fartlabs/jsonx/score)](https://jsr.io/@fartlabs/jsonx)
 [![GitHub Actions](https://github.com/FartLabs/jsonx/actions/workflows/check.yaml/badge.svg)](https://github.com/FartLabs/jsonx/actions/workflows/check.yaml)
 
-JSX runtime and compiler for composing JSON data.
+JSX runtime and compiler for composing JavaScript data.
 
 ## Getting started
 
@@ -32,7 +32,13 @@ deno add @fartlabs/jsonx
 }
 ```
 
-5\. Add a file ending in `.[j|t]sx` to your project. For example, `example.tsx`.
+## Use cases
+
+`jsonx` is versatile. Here are a few examples of what you can build with it.
+
+### Static data generation
+
+You can compose standard JSON-serializable data and serialize it.
 
 ```tsx
 function Cat() {
@@ -56,13 +62,50 @@ Deno.writeTextFileSync(
 );
 ```
 
+### Runtime object composition
+
+You can compose objects containing complex JavaScript types like `Map`s, `Set`s,
+`Date`s, or `RegExp`s.
+
+```tsx
+function Matchers() {
+  return {
+    isEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    createdAt: new Date(),
+  };
+}
+
+const config = (
+  <config>
+    <Matchers />
+  </config>
+);
+
+console.log(config.isEmail.test("hello@example.com")); // true
+```
+
+### Function composition
+
+Because `jsonx` can return any JavaScript value, you can even compose functions
+or closures.
+
+```tsx
+function Logger({ prefix }: { prefix: string }) {
+  return (message: string) => console.log(`[${prefix}] ${message}`);
+}
+
+const log = <Logger prefix="jsonx" />;
+
+log("Hello, world!"); // [jsonx] Hello, world!
+```
+
 6\. Compile your jsonx by running the `.[j|t]sx` file.
 
 ```sh
 deno run --allow-write example.tsx
 ```
 
-Resulting `data.json`:
+Output (`data.json`):
 
 ```json
 {
@@ -78,12 +121,24 @@ Resulting `data.json`:
 <img width="1154" height="535" alt="Image" src="https://github.com/user-attachments/assets/35da78fa-d564-4efb-a813-6815c8259c86" />
 
 Optimize developer ergonomics with improved modularity and maintainability by
-enabling developers to compose JSON data like React, using JSX.
+enabling developers to compose JavaScript values like React, using JSX.
 
 Developers often are required to write code that follows a specific schema or
 format. For example, a configuration file, a data file, or a response payload.
 This is often done using JSON, YAML, or TOML. However, these formats are not
 composable out of the box, and are often verbose and difficult to maintain.
+
+## Capabilities
+
+`jsonx` isn't limited to JSON-serializable data. Functions can return _any_
+JavaScript value — strings, numbers, arrays, nested objects, class instances,
+functions, `RegExp`s, `Date`s, `Set`s, `Map`s, and more. JSON is just one
+possible output format; you can also serialize to YAML, TOML, or use values
+directly in your runtime code.
+
+It's a general-purpose JSX runtime for composition — similar to how React
+components compose UI elements using JSX, jsonx lets you compose any JavaScript
+values using JSX.
 
 ## Similar projects
 
@@ -99,6 +154,13 @@ There's already a project, [json-jsx](https://github.com/alexstroukov/json-jsx),
 that offers similar functionality to jsonx. However, json-jsx is designed
 specifically for Babel projects, whereas jsonx targets JavaScript runtimes
 capable of JSX transpilation, such as Deno.
+
+## Built with jsonx
+
+- [`rt/rtx`](https://github.com/EthanThatOneKid/rt) uses `jsonx` to compose HTTP
+  REST API routers.
+- [`htx`](https://github.com/FartLabs/htx) is an HTML rendering library in JSX.
+- [`agx`](https://github.com/FartLabs/agx) is a JSX agent development system.
 
 ## Shoulders of giants
 
