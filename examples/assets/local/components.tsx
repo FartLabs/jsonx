@@ -3,8 +3,8 @@ import { expandGlobSync } from "@std/fs";
 import { encodeBase64 } from "@std/encoding/base64";
 import { normalize } from "@std/path";
 import { readFileSync } from "node:fs";
-import type { AssetsData } from "jsonx/std/assets/mod.ts";
-import { Asset, AssetKind, EncodingType } from "jsonx/std/assets/mod.ts";
+import type { AssetsData } from "../mod.ts";
+import { Asset, AssetKind, EncodingType } from "../mod.ts";
 
 /**
  * LocalAssetProps represents the properties of the LocalAsset component.

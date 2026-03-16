@@ -15,13 +15,14 @@ JSX runtime and compiler for composing JavaScript data.
 deno init
 ```
 
-3\. Add jsonx as a project dependency.
+3\. Add jsonx as a project dependency to act as your JSX runtime.
 
 ```sh
-deno add @fartlabs/jsonx
+deno add jsr:@fartlabs/jsonx
 ```
 
-4\. Add the following values to your `deno.json(c)` file.
+4\. Add the following values to your `deno.json(c)` file to configure the
+runtime.
 
 ```json
 {
@@ -157,7 +158,7 @@ capable of JSX transpilation, such as Deno.
 
 ## Built with jsonx
 
-- [`rt/rtx`](https://github.com/EthanThatOneKid/rt) uses `jsonx` to compose HTTP
+- [`rtx`](https://github.com/EthanThatOneKid/rt) uses `jsonx` to compose HTTP
   REST API routers.
 - [`htx`](https://github.com/FartLabs/htx) is an HTML rendering library in JSX.
 - [`agx`](https://github.com/FartLabs/agx) is a JSX agent development system.

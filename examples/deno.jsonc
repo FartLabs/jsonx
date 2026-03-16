@@ -1,0 +1,9 @@
+{
+  "name": "@fartlabs/jsonx-examples",
+  "version": "0.0.12",
+  "exports": {
+    "./arithmetic": "./arithmetic/mod.ts",
+    "./assets": "./assets/mod.ts",
+    "./assets/local": "./assets/local/mod.ts"
+  }
+}

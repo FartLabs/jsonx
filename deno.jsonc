@@ -3,17 +3,17 @@
   "name": "@fartlabs/jsonx",
   "version": "0.0.12",
   "exports": {
-    "./jsx-runtime": "./lib/std/runtime/mod.ts",
-    "./std/arithmetic": "./lib/std/arithmetic/mod.ts",
-    "./std/assets": "./lib/std/assets/mod.ts",
-    "./std/assets/local": "./lib/std/assets/local/mod.ts"
+    "./jsx-runtime": "./mod.ts",
+    "./jsx-dev-runtime": "./mod.ts"
   },
+  "workspace": [
+    "./examples"
+  ],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "@fartlabs/jsonx"
   },
   "imports": {
-    "jsonx/": "./lib/",
     "@cross/deepmerge": "jsr:@cross/deepmerge@^1.0.1",
     "@std/assert": "jsr:@std/assert@^1.0.19",
     "@std/encoding": "jsr:@std/encoding@^1.0.10",

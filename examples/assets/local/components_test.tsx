@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { AssetKind } from "jsonx/std/assets/mod.ts";
+import { AssetKind } from "../mod.ts";
 import { LocalAsset } from "./components.tsx";
 
 Deno.test("LocalAsset reads from file system", () => {
