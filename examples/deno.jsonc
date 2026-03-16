@@ -1,6 +1,6 @@
 {
   "name": "@fartlabs/jsonx-examples",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "exports": {
     "./arithmetic": "./arithmetic/mod.ts",
     "./assets": "./assets/mod.ts",

@@ -1,7 +1,7 @@
 {
   "lock": false,
   "name": "@fartlabs/jsonx",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "exports": {
     "./jsx-runtime": "./mod.ts",
     "./jsx-dev-runtime": "./mod.ts"
